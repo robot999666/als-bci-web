@@ -1,4 +1,4 @@
-"""全局配置：所有可调参数集中管理，可通过环境变量或 backend/.env 覆盖。"""
+"""全局配置：所有可调参数集中管理，可通过环境变量、backend/.env 或根目录 .env 覆盖。"""
 
 from functools import lru_cache
 from pathlib import Path
@@ -6,11 +6,12 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _BACKEND_DIR = Path(__file__).resolve().parents[2]
+_REPO_DIR = _BACKEND_DIR.parent
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=_BACKEND_DIR / ".env",
+        env_file=[_REPO_DIR / ".env", _BACKEND_DIR / ".env"],
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -20,6 +21,19 @@ class Settings(BaseSettings):
     api_prefix: str = "/api/v1"
 
     cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+    # 临时公网地址（由根目录 .env 提供，cpolar 网址变化时只需修改该文件）
+    public_frontend_url: str | None = None
+
+    @property
+    def effective_cors_origins(self) -> list[str]:
+        """CORS 白名单 = 本地开发地址 + 根目录 .env 中的公网前端地址。"""
+        origins = list(self.cors_origins)
+        if self.public_frontend_url:
+            url = self.public_frontend_url.rstrip("/")
+            if url and url not in origins:
+                origins.append(url)
+        return origins
 
     # Demo 模拟数据源
     demo_sampling_rate_hz: int = 250
@@ -37,4 +51,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
