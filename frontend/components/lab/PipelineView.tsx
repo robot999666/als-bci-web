@@ -43,7 +43,7 @@ export default function PipelineView({
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-white">信号处理流程</h2>
         <span className="text-[11px] text-slate-500">
-          模型推理当前为 MockModel
+          EA+FBCSP 冷启动
         </span>
       </div>
       <ol className="thin-scrollbar flex items-center gap-1 overflow-x-auto pb-2">
@@ -82,10 +82,9 @@ export default function PipelineView({
         })}
       </ol>
       <p className="mt-3 text-[11px] leading-relaxed text-slate-500">
-        TODO（未来接入点）：数据检查/预处理/特征提取将替换为经过验证的信号处理算法；
-        “模型推理”步骤将替换为 PyTorch / ONNX / 边缘设备模型服务，接口契约不变。
+        输入经格式校验后，以整批 trial 计算 EA 对齐参考，再由多频带 CSP 与 LDA
+        输出四分类概率。批内样本共同影响 EA 参考，因此结果具有批次耦合性。
       </p>
     </section>
   );
 }
-

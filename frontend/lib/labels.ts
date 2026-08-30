@@ -7,25 +7,25 @@ export interface LabelMeta {
 }
 
 export const LABEL_META: Record<IntentLabel, LabelMeta> = {
-  confirm: {
-    zh: "确认",
-    color: "#34d399",
-    chipClass: "border-emerald-400/40 bg-emerald-500/10 text-emerald-300",
+  left: {
+    zh: "左转",
+    color: "#22d3ee",
+    chipClass: "border-cyan-400/40 bg-cyan-500/10 text-cyan-300",
   },
-  negate: {
-    zh: "否定",
+  right: {
+    zh: "右转",
     color: "#fbbf24",
     chipClass: "border-amber-400/40 bg-amber-500/10 text-amber-300",
   },
-  sos: {
-    zh: "紧急求助",
+  forward: {
+    zh: "直行",
+    color: "#34d399",
+    chipClass: "border-emerald-400/40 bg-emerald-500/10 text-emerald-300",
+  },
+  stop: {
+    zh: "停止",
     color: "#fb7185",
     chipClass: "border-rose-400/40 bg-rose-500/10 text-rose-300",
-  },
-  none: {
-    zh: "无有效意图",
-    color: "#94a3b8",
-    chipClass: "border-slate-400/40 bg-slate-500/10 text-slate-300",
   },
 };
 
@@ -39,4 +39,3 @@ export const CHANNEL_COLORS = [
   "#2dd4bf",
   "#f472b6",
 ];
-

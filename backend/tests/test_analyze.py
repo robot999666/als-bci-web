@@ -1,76 +1,126 @@
 import io
-import math
+import threading
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
+import numpy as np
 from fastapi.testclient import TestClient
 
+from app.api.deps import bci_service
 from app.main import app
 
 client = TestClient(app)
+ASSET_DIR = Path(__file__).resolve().parents[2] / "bci_4class"
 
 
-def _make_csv(rows: int = 500, columns: str = "timestamp,EEG1,EEG2,EOG") -> bytes:
-    lines = [columns]
-    for i in range(rows):
-        t = i * 0.004
-        eeg1 = 10.0 * math.sin(2 * math.pi * 10.0 * t)
-        eeg2 = 8.0 * math.sin(2 * math.pi * 12.0 * t + 0.5)
-        eog = 30.0 * math.sin(2 * math.pi * 2.0 * t)
-        lines.append(f"{t:.4f},{eeg1:.3f},{eeg2:.3f},{eog:.3f}")
-    return "\n".join(lines).encode("utf-8")
+def _fixture(channels: int = 3, trials: int = 8) -> tuple[np.ndarray, np.ndarray]:
+    with np.load(
+        ASSET_DIR / "data" / f"S3_{channels}ch.npz", allow_pickle=False
+    ) as data:
+        return data["X"][:trials], data["y"][:trials]
 
 
-def _post(csv_bytes: bytes, filename: str = "demo_eeg.csv") -> object:
+def _npz_bytes(x: np.ndarray | None, y: np.ndarray | None = None, **extra: object) -> bytes:
+    stream = io.BytesIO()
+    payload: dict[str, object] = dict(extra)
+    if x is not None:
+        payload["X"] = x
+    if y is not None:
+        payload["y"] = y
+    np.savez_compressed(stream, **payload)
+    return stream.getvalue()
+
+
+def _post(content: bytes, filename: str = "batch.npz", **fields: str):
+    data = {"sampling_rate_hz": "250", "unit": "uV", **fields}
     return client.post(
         "/api/v1/analyze",
-        files={"file": (filename, io.BytesIO(csv_bytes), "text/csv")},
-        data={"window_seconds": "2.0"},
+        files={"file": (filename, io.BytesIO(content), "application/octet-stream")},
+        data=data,
     )
 
 
-def test_analyze_valid_csv() -> None:
-    response = _post(_make_csv())
-    assert response.status_code == 200
+def test_analyze_valid_labeled_batch() -> None:
+    x, y = _fixture()
+    response = _post(_npz_bytes(x, y))
+    assert response.status_code == 200, response.text
     data = response.json()
     assert data["source"] == "upload"
-    assert data["filename"] == "demo_eeg.csv"
-    assert data["channels"] == ["EEG1", "EEG2", "EOG"]
-    assert data["total_samples"] == 500
-    assert data["signal"]["time_reference"] == "relative"
-    assert data["intents"], "上传数据应产生意图结果"
-    for intent in data["intents"]:
-        assert intent["is_mock"] is True
-        assert intent["label_zh"]
+    assert data["model_mode"] == "cold_start"
+    assert data["trial_count"] == 8
+    assert data["channel_layout"] == "3ch"
+    assert data["validation"]["labeled_trials"] == 8
+    assert len(data["predictions"]) == 8
+    assert data["signal"]["channels"] == ["C3", "Cz", "C4"]
+    assert len(data["signal"]["timestamps"]) == 501
 
 
-def test_analyze_rejects_missing_timestamp() -> None:
-    response = _post(_make_csv(columns="EEG1,EOG"))
-    assert response.status_code == 422
-    assert "timestamp" in response.json()["detail"]
-
-
-def test_analyze_rejects_empty_file() -> None:
-    response = _post(b"")
-    assert response.status_code == 422
-
-
-def test_analyze_rejects_non_csv_extension() -> None:
-    response = _post(_make_csv(), filename="data.txt")
-    assert response.status_code == 422
-
-
-def test_analyze_rejects_non_numeric_channel() -> None:
-    csv_bytes = "timestamp,EEG1,EOG\n0,abc,1\n0.004,def,2\n".encode("utf-8")
-    response = _post(csv_bytes)
-    assert response.status_code == 422
-
-
-def test_analyze_epoch_timestamps() -> None:
-    rows = ["timestamp,EEG1,EOG"]
-    for i in range(100):
-        rows.append(f"2026-08-20 10:00:{i % 60:02d},{i},{i * 2}")
-    response = _post("\n".join(rows).encode("utf-8"))
-    assert response.status_code == 200
+def test_analyze_accepts_22_channels_without_labels() -> None:
+    x, _ = _fixture(22, 4)
+    response = _post(_npz_bytes(x))
+    assert response.status_code == 200, response.text
     data = response.json()
-    assert data["signal"]["time_reference"] == "epoch"
-    assert data["signal"]["start_epoch"] is not None
+    assert data["channel_layout"] == "22ch"
+    assert data["validation"] is None
+    assert all(item["expected_class_id"] is None for item in data["predictions"])
 
+
+def test_rejects_single_trial() -> None:
+    x, y = _fixture(trials=1)
+    response = _post(_npz_bytes(x, y))
+    assert response.status_code == 422
+    assert "至少需要 2 个 trial" in response.json()["detail"]
+
+
+def test_rejects_wrong_channels_and_window_size() -> None:
+    assert _post(_npz_bytes(np.zeros((2, 4, 501)))).status_code == 422
+    assert _post(_npz_bytes(np.zeros((2, 3, 500)))).status_code == 422
+
+
+def test_rejects_sampling_rate_unit_and_non_finite_values() -> None:
+    x, _ = _fixture(trials=2)
+    assert _post(_npz_bytes(x), sampling_rate_hz="256").status_code == 422
+    assert _post(_npz_bytes(x), unit="V").status_code == 422
+    x = x.copy()
+    x[0, 0, 0] = np.nan
+    assert _post(_npz_bytes(x)).status_code == 422
+
+
+def test_rejects_missing_x_object_array_and_extra_arrays() -> None:
+    assert _post(_npz_bytes(None, y=np.array([0, 1]))).status_code == 422
+    objects = np.empty((2, 3, 501), dtype=object)
+    objects.fill(1.0)
+    assert _post(_npz_bytes(objects)).status_code == 422
+    x, _ = _fixture(trials=2)
+    assert _post(_npz_bytes(x, metadata=np.array([1]))).status_code == 422
+
+
+def test_rejects_wrong_extension_and_invalid_zip() -> None:
+    x, _ = _fixture(trials=2)
+    assert _post(_npz_bytes(x), filename="batch.csv").status_code == 422
+    assert _post(b"not a zip").status_code == 422
+
+
+def test_health_remains_responsive_while_inference_runs(monkeypatch) -> None:
+    """CPU 推理在线程池等待时，健康接口不应被事件循环阻塞。"""
+    x, _ = _fixture(trials=4)
+    content = _npz_bytes(x)
+    started = threading.Event()
+    release = threading.Event()
+    original = bci_service.predict_proba
+
+    def delayed_predict(batch: np.ndarray) -> np.ndarray:
+        started.set()
+        if not release.wait(timeout=3):
+            raise TimeoutError("测试未释放推理线程")
+        return original(batch)
+
+    monkeypatch.setattr(bci_service, "predict_proba", delayed_predict)
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        pending = executor.submit(_post, content)
+        assert started.wait(timeout=2)
+        health = client.get("/api/v1/health")
+        assert health.status_code == 200
+        assert health.json()["model_ready"] is True
+        release.set()
+        assert pending.result(timeout=3).status_code == 200

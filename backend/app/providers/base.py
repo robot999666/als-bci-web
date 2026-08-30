@@ -1,8 +1,4 @@
-"""数据源抽象层。
-
-所有信号来源（Demo 模拟 / CSV 上传 / 未来实时设备）统一输出 SignalWindow，
-上层 Pipeline 不关心数据来自哪里。
-"""
+"""为后续实时 EEG 设备保留的数据源抽象层。"""
 
 from dataclasses import dataclass
 from typing import Protocol
@@ -32,4 +28,3 @@ class DataSourceProvider(Protocol):
     def stream_window(self, window_seconds: float) -> SignalWindow:
         """返回最近 window_seconds 秒的数据窗口。"""
         ...
-

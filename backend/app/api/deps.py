@@ -1,8 +1,10 @@
-"""共享依赖：Pipeline 单例等。"""
+"""共享依赖：BCI 模型单例与推理并发限制。"""
 
-from app.services.pipeline import SignalPipeline
+import asyncio
 
-# 全局唯一 Pipeline 实例。TODO(真实模型): 未来将 MockModelService 替换为
-# PyTorch/ONNX/边缘设备实现后，只需在此处调整依赖注入。
-pipeline = SignalPipeline()
+from app.core.config import get_settings
+from app.services.bci_model_service import Bci4ClassService
 
+settings = get_settings()
+bci_service = Bci4ClassService()
+inference_semaphore = asyncio.Semaphore(settings.bci_max_concurrent_inferences)

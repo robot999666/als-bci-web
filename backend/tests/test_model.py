@@ -1,42 +1,27 @@
-from app.services.model_service import MockModelService
-from app.services.signal_processor import WindowFeatures
+from pathlib import Path
 
-model = MockModelService()
+import numpy as np
 
-
-def _features(
-    eog_p2p: float = 0.0,
-    eog_blinks: float = 0.0,
-    eog_drift: float = 0.0,
-    eeg_var: float = 10.0,
-) -> WindowFeatures:
-    return WindowFeatures(
-        start_offset=0.0,
-        end_offset=2.0,
-        eog_p2p=eog_p2p,
-        eog_blinks=eog_blinks,
-        eog_drift=eog_drift,
-        eeg_var=eeg_var,
-    )
+from app.services.bci_model_service import Bci4ClassService
 
 
-def test_mock_model_deterministic() -> None:
-    features = _features(eog_p2p=90.0, eog_blinks=2.0)
-    assert model.predict(features) == model.predict(features)
+ASSET_DIR = Path(__file__).resolve().parents[2] / "bci_4class"
 
 
-def test_mock_model_rules() -> None:
-    assert model.predict(_features(eog_p2p=90.0, eog_blinks=2.0)).label == "confirm"
-    assert model.predict(_features(eog_p2p=50.0, eog_blinks=0.0, eog_drift=40.0)).label == "negate"
-    assert model.predict(_features(eog_p2p=80.0, eog_blinks=1.0, eog_drift=3.0)).label == "sos"
-    assert model.predict(_features(eog_p2p=10.0, eog_blinks=0.0, eog_drift=2.0, eeg_var=1.0)).label == "none"
-    assert model.predict(_features(eog_p2p=10.0, eog_blinks=0.0, eog_drift=2.0, eeg_var=20.0)).label == "none"
+def test_models_load_and_are_ready() -> None:
+    service = Bci4ClassService(ASSET_DIR)
+    assert service.ready, service.error
+    assert set(service.models) == {3, 22}
+    assert set(service.checksums) == {"3ch", "22ch"}
 
 
-def test_mock_model_confidence_bounds() -> None:
-    for label in ("confirm", "negate", "sos", "none"):
-        features = _features()
-        prediction = model.predict(features)
-        assert prediction.label_zh
-        assert 0.0 <= prediction.confidence <= 1.0
-
+def test_inference_is_deterministic_and_probabilities_are_valid() -> None:
+    service = Bci4ClassService(ASSET_DIR, self_test=False)
+    with np.load(ASSET_DIR / "data" / "S3_3ch.npz", allow_pickle=False) as data:
+        x = data["X"][:8]
+    first = service.predict_proba(x)
+    second = service.predict_proba(x)
+    np.testing.assert_array_equal(first, second)
+    assert first.shape == (8, 4)
+    assert np.isfinite(first).all()
+    np.testing.assert_allclose(first.sum(axis=1), 1.0, atol=1e-6)

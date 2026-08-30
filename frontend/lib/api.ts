@@ -59,15 +59,16 @@ async function request<T>(
 export const api = {
   health: () => request<HealthResponse>("/api/v1/health"),
 
-  demoSignals: (windowSeconds = 5) =>
+  demoSignals: (trialCount = 8) =>
     request<DemoSignalsResponse>(
-      `/api/v1/demo/signals?window_seconds=${windowSeconds}`,
+      `/api/v1/demo/signals?trial_count=${trialCount}`,
     ),
 
-  analyze: (file: File, windowSeconds = 2) => {
+  analyze: (file: File) => {
     const form = new FormData();
     form.append("file", file);
-    form.append("window_seconds", String(windowSeconds));
+    form.append("sampling_rate_hz", "250");
+    form.append("unit", "uV");
     return request<AnalyzeResponse>(
       "/api/v1/analyze",
       { method: "POST", body: form },
@@ -75,4 +76,3 @@ export const api = {
     );
   },
 };
-

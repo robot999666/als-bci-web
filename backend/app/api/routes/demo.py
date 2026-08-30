@@ -1,33 +1,29 @@
-"""Demo 模拟实时数据接口。"""
-
-from datetime import datetime, timezone
+"""内置 S3 科研数据回放接口。"""
 
 from fastapi import APIRouter, Query
+from starlette.concurrency import run_in_threadpool
 
-from app.api.deps import pipeline
+from app.api.deps import bci_service, inference_semaphore
 from app.core.config import get_settings
-from app.providers import get_provider
 from app.schemas.api import DemoSignalsResponse
-from app.schemas.signal import SignalData
+from app.services.bci_response import build_bci_response
 
 router = APIRouter(tags=["demo"])
 
 
 @router.get("/demo/signals", response_model=DemoSignalsResponse)
-def get_demo_signals(
-    window_seconds: float = Query(5.0, ge=0.5, le=30.0),
+async def get_demo_signals(
+    trial_count: int = Query(8, ge=4, le=32),
 ) -> DemoSignalsResponse:
     settings = get_settings()
-    raw = get_provider("demo").stream_window(window_seconds)
-    result = pipeline.run(raw, settings.default_window_seconds, time_reference="epoch")
-    return DemoSignalsResponse(
+    count = min(trial_count, settings.max_intent_windows)
+    x, y = bci_service.demo_batch(count)
+    async with inference_semaphore:
+        probabilities = await run_in_threadpool(bci_service.predict_proba, x)
+    return build_bci_response(
         source="demo",
-        sampling_rate_hz=raw.sampling_rate_hz,
-        channels=list(raw.channels),
-        window_seconds=window_seconds,
-        total_samples=len(raw.timestamps),
-        signal=SignalData.from_window(result.signal, "epoch"),
-        intents=result.intents[: settings.max_intent_windows],
-        generated_at=datetime.now(timezone.utc).isoformat(),
+        filename=None,
+        x=x,
+        y=y,
+        probabilities=probabilities,
     )
-

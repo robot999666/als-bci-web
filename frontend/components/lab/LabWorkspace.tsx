@@ -10,23 +10,21 @@ import { api } from "@/lib/api";
 import type {
   AnalyzeResponse,
   DataSourceKind,
-  IntentWindow,
+  IntentPrediction,
   SignalData,
 } from "@/lib/types";
 import { useDemoStream } from "@/hooks/useDemoStream";
 
 export default function LabWorkspace() {
   const [source, setSource] = useState<DataSourceKind>("demo");
-  const [paused, setPaused] = useState(false);
   const [uploaded, setUploaded] = useState<AnalyzeResponse | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const stream = useDemoStream({ enabled: source === "demo", paused });
+  const stream = useDemoStream({ enabled: source === "demo" });
 
   const handleSelectDemo = useCallback(() => {
     setSource("demo");
-    setPaused(false);
     setUploaded(null);
     setUploadError(null);
     stream.reset();
@@ -34,17 +32,16 @@ export default function LabWorkspace() {
 
   const handleFile = useCallback(
     async (file: File) => {
-      if (!file.name.toLowerCase().endsWith(".csv")) {
-        setUploadError("请选择 .csv 文件");
+      if (!file.name.toLowerCase().endsWith(".npz")) {
+        setUploadError("请选择 .npz 文件");
         return;
       }
       setUploading(true);
       setUploadError(null);
       try {
-        const response = await api.analyze(file, 2);
+        const response = await api.analyze(file);
         setUploaded(response);
         setSource("upload");
-        setPaused(false);
       } catch (err) {
         setUploadError(
           err instanceof Error ? err.message : "文件分析失败，请检查格式后重试",
@@ -59,18 +56,18 @@ export default function LabWorkspace() {
   const signal: SignalData | null =
     source === "demo" ? stream.signal : (uploaded?.signal ?? null);
 
-  const intents: IntentWindow[] =
-    source === "demo" ? stream.intents : (uploaded?.intents ?? []);
+  const predictions: IntentPrediction[] =
+    source === "demo" ? stream.predictions : (uploaded?.predictions ?? []);
 
   const sourceLabel = useMemo(() => {
     if (source === "demo") {
-      return paused ? "Demo 已暂停" : "Demo 模拟实时数据";
+      return stream.status === "loading" ? "S3 数据加载中" : "S3 科研数据回放";
     }
     if (source === "upload" && uploaded) {
       return `上传文件：${uploaded.filename}`;
     }
     return "等待数据源";
-  }, [source, paused, uploaded]);
+  }, [source, stream.status, uploaded]);
 
   const displayError = source === "demo" ? stream.error : uploadError;
 
@@ -81,11 +78,11 @@ export default function LabWorkspace() {
           在线实验平台
         </h1>
         <p className="mt-2 text-sm text-slate-400">
-          数据输入 → 信号展示 → 模拟处理 → 意图输出
+          NPZ 数据输入 → EA 对齐 → FBCSP 推理 → 四分类指令
         </p>
         <div className="mt-4 rounded-xl border border-amber-400/20 bg-amber-500/5 px-4 py-3 text-xs leading-relaxed text-amber-200/80">
-          当前为 Demo 模拟识别结果：信号由确定性模拟器生成，意图由 Mock
-          模型规则表产出，仅供实验演示，不构成医疗判断。
+          当前使用 EA+FBCSP 冷启动科研模型。Demo 为 S3 数据集样例回放，
+          并非实时设备或临床验证结果；仅供科研实验，不构成医疗判断。
         </div>
       </header>
 
@@ -114,10 +111,11 @@ export default function LabWorkspace() {
             {source === "demo" ? (
               <button
                 type="button"
-                onClick={() => setPaused((value) => !value)}
-                className="rounded-lg border border-slate-700 px-4 py-1.5 text-xs font-medium text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300"
+                onClick={stream.reset}
+                disabled={stream.status === "loading"}
+                className="rounded-lg border border-slate-700 px-4 py-1.5 text-xs font-medium text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300 disabled:opacity-50"
               >
-                {paused ? "继续" : "暂停"}
+                重新推理
               </button>
             ) : null}
           </div>
@@ -126,14 +124,13 @@ export default function LabWorkspace() {
           </div>
         </section>
 
-        <IntentPanel intents={intents} />
+        <IntentPanel predictions={predictions} />
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <IntentTimeline intents={intents} />
-        <PipelineView hasData={intents.length > 0} streaming={source === "demo"} />
+        <IntentTimeline predictions={predictions} />
+        <PipelineView hasData={predictions.length > 0} streaming={false} />
       </div>
     </div>
   );
 }
-

@@ -9,9 +9,8 @@ export default function PlatformCta() {
             亲自体验 V0 在线实验平台
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-400">
-            查看实时模拟脑电/眼电波形，上传 CSV 数据，
-            观察“数据输入 → 信号展示 → 模拟处理 → 意图输出”完整流程。
-            当前识别结果为 Demo 模拟结果。
+            回放 S3 脑电样例、上传 NPZ 批量数据，观察“数据校验 → EA 对齐 →
+            FBCSP 推理 → 四分类指令”完整流程。当前结果仅用于科研验证。
           </p>
           <Link
             href="/lab"
@@ -24,4 +23,3 @@ export default function PlatformCta() {
     </section>
   );
 }
-

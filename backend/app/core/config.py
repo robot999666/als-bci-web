@@ -22,7 +22,8 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
-    # 临时公网地址（由根目录 .env 提供，cpolar 网址变化时只需修改该文件）
+    # 公网前端地址（由根目录 .env 提供；支持逗号分隔配置多个来源，
+    # 例如 https://a.example.com,https://b.example.com）
     public_frontend_url: str | None = None
 
     @property
@@ -30,22 +31,22 @@ class Settings(BaseSettings):
         """CORS 白名单 = 本地开发地址 + 根目录 .env 中的公网前端地址。"""
         origins = list(self.cors_origins)
         if self.public_frontend_url:
-            url = self.public_frontend_url.rstrip("/")
-            if url and url not in origins:
-                origins.append(url)
+            for raw in self.public_frontend_url.split(","):
+                url = raw.strip().rstrip("/")
+                if url and url not in origins:
+                    origins.append(url)
         return origins
 
-    # Demo 模拟数据源
-    demo_sampling_rate_hz: int = 250
-    demo_window_seconds: float = 5.0
-    demo_channels: list[str] = ["EEG1", "EEG2", "EEG3", "EEG4", "EOG"]
-    demo_seed: int = 42
-
-    # 分析参数
-    default_window_seconds: float = 2.0
+    # 上传/响应限制
     max_upload_mb: int = 20
-    max_display_points: int = 12_000
     max_intent_windows: int = 100
+
+    # BCI 四分类冷启动模型
+    bci_sampling_rate_hz: int = 250
+    bci_window_samples: int = 501
+    bci_max_decompressed_mb: int = 64
+    bci_max_concurrent_inferences: int = 1
+    bci_demo_trials: int = 8
 
 
 @lru_cache

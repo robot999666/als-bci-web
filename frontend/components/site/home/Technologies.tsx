@@ -3,18 +3,18 @@ import SectionHeading from "@/components/site/SectionHeading";
 const TECHS = [
   {
     name: "EEG 脑电信号",
-    desc: "反映脑皮层电活动，用于识别认知与意图相关节律；V0 由模拟信号演示。",
+    desc: "反映脑皮层电活动，用于识别运动想象相关节律；当前由 S3 科研样例演示。",
     tag: "演示中",
   },
   {
-    name: "EOG 眼电信号",
-    desc: "捕捉眨眼与眼动电位变化，适合作为沟通意图的补充通道。",
-    tag: "演示中",
+    name: "EA 欧氏对齐",
+    desc: "使用同一请求中的整批 trial 估计参考协方差，缓解跨受试者分布差异。",
+    tag: "已接入",
   },
   {
-    name: "多模态融合",
-    desc: "EEG + EOG 联合建模，未来扩展心率、血氧、姿态与跌倒检测。",
-    tag: "预留",
+    name: "FBCSP + LDA",
+    desc: "多频带 CSP 提取空间节律特征，由 LDA 输出四分类概率。",
+    tag: "已接入",
   },
   {
     name: "时间窗意图识别",
@@ -28,7 +28,7 @@ const TECHS = [
   },
   {
     name: "可复现 Demo",
-    desc: "确定性 Mock 数据与模型，演示结果稳定可复现，便于教学与评审。",
+    desc: "固定模型 checksum 与依赖版本，使用科研样例提供可回归的批量预测。",
     tag: "当前",
   },
 ];
@@ -64,4 +64,3 @@ export default function Technologies() {
     </section>
   );
 }
-

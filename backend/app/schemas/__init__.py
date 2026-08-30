@@ -5,14 +5,13 @@ from app.schemas.api import (
     DemoSignalsResponse,
     HealthResponse,
 )
-from app.schemas.intent import IntentWindow
+from app.schemas.intent import IntentPrediction
 from app.schemas.signal import SignalData
 
 __all__ = [
     "AnalyzeResponse",
     "DemoSignalsResponse",
     "HealthResponse",
-    "IntentWindow",
+    "IntentPrediction",
     "SignalData",
 ]
-

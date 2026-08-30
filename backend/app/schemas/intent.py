@@ -1,23 +1,29 @@
-"""意图识别结果结构。"""
+"""BCI 四分类预测结果结构。"""
 
 from typing import Literal
 
 from pydantic import BaseModel
 
-IntentLabel = Literal["confirm", "negate", "sos", "none"]
+IntentLabel = Literal["left", "right", "forward", "stop"]
 
 
-class IntentWindow(BaseModel):
-    """一个时间窗的意图识别结果。"""
+class ClassProbabilities(BaseModel):
+    left: float
+    right: float
+    forward: float
+    stop: float
 
-    index: int
-    start_epoch: float
-    end_epoch: float
-    start_time: str
-    end_time: str
+
+class IntentPrediction(BaseModel):
+    """一个 trial 的四分类预测。"""
+
+    trial_index: int
+    class_id: int
     label: IntentLabel
     label_zh: str
     confidence: float
+    probabilities: ClassProbabilities
+    expected_class_id: int | None = None
+    correct: bool | None = None
     reason: str
-    is_mock: bool = True
-
+    is_mock: Literal[False] = False

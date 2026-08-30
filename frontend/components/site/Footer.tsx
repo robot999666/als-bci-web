@@ -11,8 +11,8 @@ export default function Footer() {
             </p>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               面向 ALS 重度运动障碍人群的脑电-眼电多模态意图识别系统。
-              当前为 V0 科研原型 Demo：识别结果由确定性模拟数据与 Mock
-              模型生成，非医疗器械，未经真实数据与临床验证，不用于诊断或治疗决策。
+              当前为科研原型：使用 EA+FBCSP 冷启动模型与科研数据回放，
+              非医疗器械，未经临床验证，不用于诊断或治疗决策。
             </p>
           </div>
           <div className="flex gap-10 text-sm">
@@ -43,11 +43,11 @@ export default function Footer() {
                 API 文档
               </a>
               <a
-                href="/sample_data/demo_eeg.csv"
+                href="/sample_data/S3_3ch.npz"
                 download
                 className="block hover:text-cyan-300"
               >
-                示例数据 CSV
+                BCI 示例数据 NPZ
               </a>
             </div>
           </div>
@@ -59,4 +59,3 @@ export default function Footer() {
     </footer>
   );
 }
-

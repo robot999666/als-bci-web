@@ -24,7 +24,8 @@ function loadRootEnv(): void {
     }
     const key = line.slice(0, eq).trim();
     const value = line.slice(eq + 1).trim();
-    if (key && value) {
+    // CI、容器或当前 shell 显式提供的环境变量优先于根目录开发配置。
+    if (key && value && process.env[key] === undefined) {
       process.env[key] = value;
     }
   }
@@ -35,6 +36,7 @@ loadRootEnv();
 const apiBaseUrl =
   process.env.PUBLIC_BACKEND_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL;
 
+/** 单个 URL 解析 hostname；非法或缺失返回 null，不影响其他条目。 */
 function extractHostname(url: string | undefined): string | null {
   if (!url) {
     return null;
@@ -46,12 +48,17 @@ function extractHostname(url: string | undefined): string | null {
   }
 }
 
-// 开发服务器默认只放行 localhost；通过 cpolar 公网域名访问时，
-// 浏览器请求会携带该域名的 Origin，需将其加入 allowedDevOrigins。
-// 主机名来自根目录 .env 的 PUBLIC_FRONTEND_URL，cpolar 网址变化时只需改 .env。
-const allowedDevOrigins = [
-  extractHostname(process.env.PUBLIC_FRONTEND_URL),
-].filter((host): host is string => host !== null);
+/**
+ * 开发服务器默认只放行 localhost；通过 cpolar 公网域名访问时，
+ * 浏览器请求会携带该域名的 Origin，需将其加入 allowedDevOrigins。
+ * PUBLIC_FRONTEND_URL 支持逗号分隔多个 URL：逐个解析 hostname，
+ * 单个非法 URL 仅被跳过，不会导致整个配置失败。
+ */
+const allowedDevOrigins = (process.env.PUBLIC_FRONTEND_URL ?? "")
+  .split(",")
+  .map((raw) => raw.trim())
+  .map(extractHostname)
+  .filter((host): host is string => host !== null);
 
 const nextConfig: NextConfig = {
   allowedDevOrigins,

@@ -3,7 +3,7 @@ import SectionHeading from "@/components/site/SectionHeading";
 const LAYERS = [
   {
     name: "信号采集层",
-    items: ["EEG / EOG 传感器", "Demo 模拟数据（当前）", "ADS1299 设备（开发中）"],
+    items: ["EEG 传感器", "S3 科研数据回放（当前）", "ADS1299 设备（开发中）"],
   },
   {
     name: "数据链路层",
@@ -11,11 +11,11 @@ const LAYERS = [
   },
   {
     name: "信号处理层",
-    items: ["数据检查", "预处理 / 时间窗", "特征提取"],
+    items: ["NPZ 格式校验", "EA 欧氏对齐", "多频带 CSP 特征"],
   },
   {
     name: "识别与展示层",
-    items: ["模型推理（Mock 模型）", "意图输出", "波形可视化 / 时间轴"],
+    items: ["FBCSP + LDA 推理", "四分类指令", "波形可视化 / Trial 时间线"],
   },
 ];
 
@@ -56,10 +56,9 @@ export default function Architecture() {
         </div>
         <p className="mt-8 text-center text-xs text-slate-500">
           处理流程：原始信号 → 数据检查 → 信号预处理 → 时间窗切分 → 特征提取 →
-          模型推理 → 意图输出（模型推理当前为 MockModel，标识 Demo 模拟结果）
+          模型推理 → 左转 / 右转 / 直行 / 停止（当前为冷启动科研模型）
         </p>
       </div>
     </section>
   );
 }
-

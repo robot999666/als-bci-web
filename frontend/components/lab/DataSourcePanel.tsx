@@ -34,14 +34,14 @@ export default function DataSourcePanel({
       >
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-white">
-            Demo 模拟实时数据
+          S3 科研数据回放
           </span>
           <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
             可用
           </span>
         </div>
         <p className="mt-2 text-xs leading-relaxed text-slate-400">
-          自动生成 EEG/EOG 时序信号（250Hz）并动态绘制波形，可暂停观察。
+          使用内置 3 通道 S3 样例，通过真实 EA+FBCSP 冷启动模型批量识别。
         </p>
       </button>
 
@@ -59,8 +59,7 @@ export default function DataSourcePanel({
           </span>
         </div>
         <p className="mt-2 text-xs leading-relaxed text-slate-400">
-          支持 CSV：列包括 timestamp 与任意数值信号通道（如 EEG1…、EOG），
-          通道数自动识别。
+          支持 NPZ：X 形状为 (N, 3|22, 501)，250Hz、单位 μV；可选 y 标签。
         </p>
         <div className="mt-3 flex items-center gap-2">
           <button
@@ -69,20 +68,20 @@ export default function DataSourcePanel({
             onClick={() => fileInputRef.current?.click()}
             className="rounded-lg bg-slate-700 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {uploading ? "分析中…" : "选择 CSV 文件"}
+            {uploading ? "分析中…" : "选择 NPZ 文件"}
           </button>
           <a
-            href="/sample_data/demo_eeg.csv"
+            href="/sample_data/S3_3ch.npz"
             download
             className="text-xs text-cyan-400 hover:text-cyan-300"
           >
-            下载示例数据
+            下载 S3 示例
           </a>
         </div>
         <input
           ref={fileInputRef}
           type="file"
-          accept=".csv"
+          accept=".npz"
           className="hidden"
           onChange={(event) => {
             const file = event.target.files?.[0];
@@ -114,4 +113,3 @@ export default function DataSourcePanel({
     </section>
   );
 }
-

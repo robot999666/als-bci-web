@@ -3,7 +3,7 @@ import Link from "next/link";
 const HERO_POINTS = [
   "多模态 EEG + EOG",
   "时间窗意图识别",
-  "确定性 Mock 演示",
+  "EA+FBCSP 冷启动",
   "科研原型 · 待验证",
 ];
 
@@ -22,13 +22,12 @@ export default function Hero() {
             模块化便携辅助终端
           </h1>
           <p className="mt-6 text-lg font-medium text-cyan-200 sm:text-xl">
-            面向 ALS 重度运动障碍人群，通过脑电（EEG）与眼电（EOG）
-            识别极简沟通意图
+            面向 ALS 重度运动障碍人群，通过脑电运动想象识别四类导航指令
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
-            以时间窗为单位识别「确认 / 否定 / 紧急求助」等少量关键意图，
-            为无法进行言语与肢体沟通的患者提供辅助表达通道。
-            本平台当前为实验性 Demo，使用确定性模拟数据演示完整流程。
+            以 2 秒 trial 为单位识别「左转 / 右转 / 直行 / 停止」，
+            为无法进行言语与肢体沟通的患者提供辅助控制通道。
+            本平台当前使用 S3 科研样例与冷启动模型演示完整流程。
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -61,4 +60,3 @@ export default function Hero() {
     </section>
   );
 }
-

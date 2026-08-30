@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from app.schemas.intent import IntentWindow
+from app.schemas.intent import IntentPrediction
 from app.schemas.signal import SignalData
 
 
@@ -13,26 +13,43 @@ class HealthResponse(BaseModel):
     service: str
     version: str
     time: str
+    model_ready: bool
+    model_name: str
+    model_mode: str
+    loaded_layouts: list[str]
+    model_checksums: dict[str, str]
+    runtime_versions: dict[str, str]
+    model_error: str | None = None
 
 
-class DemoSignalsResponse(BaseModel):
-    source: Literal["demo"]
+class ValidationMetrics(BaseModel):
+    labeled_trials: int
+    correct_trials: int
+    accuracy: float
+
+
+class BciBatchResponse(BaseModel):
+    source: Literal["demo", "upload"]
+    filename: str | None = None
+    model_name: str = "EA+FBCSP"
+    model_mode: Literal["cold_start"] = "cold_start"
     sampling_rate_hz: int
+    channel_layout: Literal["3ch", "22ch"]
     channels: list[str]
-    window_seconds: float
+    trial_count: int
+    window_samples: int
     total_samples: int
     signal: SignalData
-    intents: list[IntentWindow]
+    predictions: list[IntentPrediction]
+    validation: ValidationMetrics | None = None
+    batch_coupled_alignment: Literal[True] = True
     generated_at: str
 
 
-class AnalyzeResponse(BaseModel):
+class DemoSignalsResponse(BciBatchResponse):
+    source: Literal["demo"]
+
+
+class AnalyzeResponse(BciBatchResponse):
     source: Literal["upload"]
     filename: str
-    sampling_rate_hz: int
-    channels: list[str]
-    total_samples: int
-    signal: SignalData
-    intents: list[IntentWindow]
-    generated_at: str
-
