@@ -1,59 +1,45 @@
 import Link from "next/link";
+import BrandMark from "@/components/site/BrandMark";
 
 export default function Footer() {
   return (
     <footer className="border-t border-slate-800/80 bg-slate-950">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-xl">
-            <p className="text-sm font-semibold text-white">
-              模块化便携辅助终端 · ALS-BCI
-            </p>
-            <p className="mt-2 text-xs leading-relaxed text-slate-500">
-              面向 ALS 重度运动障碍人群的脑电-眼电多模态意图识别系统。
-              当前为科研原型：使用 EA+FBCSP 冷启动模型与科研数据回放，
-              非医疗器械，未经临床验证，不用于诊断或治疗决策。
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <div className="grid gap-10 md:grid-cols-[1fr_auto]">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3">
+              <BrandMark className="h-10 w-10" />
+              <div>
+                <p className="font-bold text-white">ALS-BCI 脑机接口意图识别平台</p>
+                <p className="mt-0.5 text-[12px] text-slate-500">首都师范大学跨学科科研项目</p>
+              </div>
+            </div>
+            <p className="mt-5 text-[13px] leading-7 text-slate-500">
+              面向渐冻症患者的运动想象脑电四分类辅助交互研究。
+              本项目用于科研与教学验证，不构成医疗器械、诊断工具或治疗建议。
             </p>
           </div>
-          <div className="flex gap-10 text-sm">
-            <div className="space-y-2 text-slate-500">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                导航
-              </p>
-              <Link href="/" className="block hover:text-cyan-300">
-                项目首页
-              </Link>
-              <Link href="/lab" className="block hover:text-cyan-300">
-                在线实验平台
-              </Link>
-              <Link href="/#architecture" className="block hover:text-cyan-300">
-                系统架构
-              </Link>
+          <div className="grid grid-cols-2 gap-10 text-[13px]">
+            <div className="space-y-2.5 text-slate-500">
+              <p className="font-semibold text-slate-300">项目导航</p>
+              <Link href="/#als" className="block hover:text-cyan-300">了解渐冻症</Link>
+              <Link href="/#architecture" className="block hover:text-cyan-300">技术架构</Link>
+              <Link href="/#team" className="block hover:text-cyan-300">团队成员</Link>
             </div>
-            <div className="space-y-2 text-slate-500">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                文档
-              </p>
-              <a
-                href="http://localhost:8000/docs"
-                target="_blank"
-                rel="noreferrer"
-                className="block hover:text-cyan-300"
-              >
-                API 文档
+            <div className="space-y-2.5 text-slate-500">
+              <p className="font-semibold text-slate-300">实验资源</p>
+              <Link href="/lab" className="block hover:text-cyan-300">在线实验平台</Link>
+              <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer" className="block hover:text-cyan-300">
+                推理接口文档
               </a>
-              <a
-                href="/sample_data/S3_3ch.npz"
-                download
-                className="block hover:text-cyan-300"
-              >
-                BCI 示例数据 NPZ
+              <a href="/sample_data/S3_3ch.npz" download className="block hover:text-cyan-300">
+                脑电示例数据
               </a>
             </div>
           </div>
         </div>
-        <p className="mt-8 border-t border-slate-800/80 pt-5 text-center text-xs text-slate-600">
-          © 2026 ALS-BCI 科研项目组 · V0 Demo · 仅供科研与教学演示
+        <p className="mt-10 border-t border-slate-800/80 pt-5 text-center text-[12px] text-slate-600">
+          © 2026 ALS-BCI 科研项目组 · 首都师范大学
         </p>
       </div>
     </footer>

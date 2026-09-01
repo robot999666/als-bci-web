@@ -19,8 +19,8 @@ export default function DataSourcePanel({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
-      <h2 className="mb-4 text-sm font-semibold text-white">数据源</h2>
+    <section className="card-surface rounded-2xl p-5">
+      <h2 className="mb-4 text-base font-semibold text-white">数据来源</h2>
 
       <button
         type="button"
@@ -33,15 +33,15 @@ export default function DataSourcePanel({
         }`}
       >
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-white">
-          S3 科研数据回放
+          <span className="text-[15px] font-medium text-white">
+            S3 科研数据回放
           </span>
           <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
             可用
           </span>
         </div>
-        <p className="mt-2 text-xs leading-relaxed text-slate-400">
-          使用内置 3 通道 S3 样例，通过真实 EA+FBCSP 冷启动模型批量识别。
+        <p className="mt-2 text-[13px] leading-6 text-slate-400">
+          使用内置 3 通道科研样例，通过欧氏对齐（EA）和滤波器组共空间模式（FBCSP）模型完成批量识别。
         </p>
       </button>
 
@@ -53,36 +53,40 @@ export default function DataSourcePanel({
         }`}
       >
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-white">上传数据文件</span>
+          <span className="text-[15px] font-medium text-white">上传数据文件</span>
           <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
             可用
           </span>
         </div>
-        <p className="mt-2 text-xs leading-relaxed text-slate-400">
-          支持 NPZ：X 形状为 (N, 3|22, 501)，250Hz、单位 μV；可选 y 标签。
+        <p className="mt-2 text-[13px] leading-6 text-slate-400">
+          支持 NumPy 压缩数组文件（NPZ）：X 形状为 (N, 3|22, 501)，
+          采样率 250 Hz、单位 μV，可选 y 标签。
         </p>
         <div className="mt-3 flex items-center gap-2">
-          <button
-            type="button"
-            disabled={uploading}
-            onClick={() => fileInputRef.current?.click()}
-            className="rounded-lg bg-slate-700 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
+          <label
+            htmlFor="bci-npz-upload"
+            aria-disabled={uploading}
+            className={`rounded-lg bg-slate-700 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-slate-600 ${
+              uploading ? "pointer-events-none cursor-not-allowed opacity-50" : "cursor-pointer"
+            }`}
           >
             {uploading ? "分析中…" : "选择 NPZ 文件"}
-          </button>
+          </label>
           <a
             href="/sample_data/S3_3ch.npz"
             download
-            className="text-xs text-cyan-400 hover:text-cyan-300"
+            className="text-[12px] text-cyan-400 hover:text-cyan-300"
           >
             下载 S3 示例
           </a>
         </div>
         <input
+          id="bci-npz-upload"
           ref={fileInputRef}
           type="file"
           accept=".npz"
-          className="hidden"
+          className="sr-only"
+          disabled={uploading}
           onChange={(event) => {
             const file = event.target.files?.[0];
             if (file) {
@@ -93,23 +97,9 @@ export default function DataSourcePanel({
         />
       </div>
 
-      <div
-        aria-disabled="true"
-        className="mt-3 cursor-not-allowed rounded-xl border border-slate-800 bg-slate-900/40 p-4 opacity-70"
-      >
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-slate-300">
-            实时设备接入
-          </span>
-          <span className="rounded-full bg-slate-700/60 px-2 py-0.5 text-[10px] font-medium text-slate-300">
-            开发中
-          </span>
-        </div>
-        <p className="mt-2 text-xs leading-relaxed text-slate-500">
-          设备接入开发中（ADS1299 → 本地采集程序 → WebSocket）。入口已预留，
-          本阶段不实现硬件通信。
-        </p>
-      </div>
+      <p className="mt-4 border-t border-slate-800 pt-4 text-[12px] leading-6 text-slate-500">
+        数据会在本次请求内完成推理；服务日志不记录原始脑电内容。
+      </p>
     </section>
   );
 }

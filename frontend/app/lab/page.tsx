@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import LabWorkspace from "@/components/lab/LabWorkspace";
 
 export const metadata: Metadata = {
-  title: "在线实验平台 | ALS-BCI 科研原型",
+  title: "脑电四分类在线实验 | ALS-BCI",
   description:
-    "在线实验平台：S3 科研数据回放、NPZ 批量分析、多通道波形与 BCI 四分类预测。",
+    "ALS-BCI 在线实验平台：科研数据回放、NPZ 批量分析、多通道脑电波形与四分类预测。",
 };
 
 export default function LabPage() {

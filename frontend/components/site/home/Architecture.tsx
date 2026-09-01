@@ -1,63 +1,74 @@
 import SectionHeading from "@/components/site/SectionHeading";
 
-const LAYERS = [
+const STAGES = [
   {
-    name: "信号采集层",
-    items: ["EEG 传感器", "S3 科研数据回放（当前）", "ADS1299 设备（开发中）"],
+    number: "01",
+    title: "脑电数据输入",
+    detail: "3 / 22 通道 · 250 Hz · 501 点",
   },
   {
-    name: "数据链路层",
-    items: ["REST API（当前）", "WebSocket 实时链路（预留）", "FastAPI 后端"],
+    number: "02",
+    title: "数据安全校验",
+    detail: "格式、形状、数值与容量检查",
   },
   {
-    name: "信号处理层",
-    items: ["NPZ 格式校验", "EA 欧氏对齐", "多频带 CSP 特征"],
+    number: "03",
+    title: "欧氏对齐（EA）",
+    detail: "整批试次估计参考协方差",
   },
   {
-    name: "识别与展示层",
-    items: ["FBCSP + LDA 推理", "四分类指令", "波形可视化 / Trial 时间线"],
+    number: "04",
+    title: "滤波器组共空间模式",
+    detail: "FBCSP 提取多频带空间特征",
+  },
+  {
+    number: "05",
+    title: "线性判别分析（LDA）",
+    detail: "输出四分类概率与置信度",
+  },
+  {
+    number: "06",
+    title: "网页结果展示",
+    detail: "波形、意图与试次预测序列",
   },
 ];
 
 export default function Architecture() {
   return (
-    <section
-      id="architecture"
-      className="scroll-mt-20 border-t border-slate-800/60 py-20"
-    >
+    <section id="architecture" className="scroll-mt-24 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeading
-          eyebrow="系统架构"
-          title="分层解耦，为真实设备与算法预留接入点"
-          description="API、信号处理与模型推理相互独立；数据源与模型均通过统一接口抽象，未来替换不牵动上层。"
+          eyebrow="技术架构"
+          title="可追踪的端到端脑电推理流程"
+          description="每个环节均对应当前系统中的实际实现，从科研数据输入到四分类结果展示形成完整闭环。"
         />
-        <div className="flex flex-col items-stretch gap-3 lg:flex-row lg:items-center">
-          {LAYERS.map((layer, index) => (
-            <div key={layer.name} className="flex flex-1 flex-col gap-3">
-              <div className="h-full rounded-2xl border border-slate-700 bg-slate-900/60 p-5">
-                <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400">
-                  {layer.name}
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {layer.items.map((item) => (
-                    <li key={item} className="text-xs text-slate-400">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {index < LAYERS.length - 1 ? (
-                <span className="hidden text-center text-slate-600 lg:block">
-                  ↓
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {STAGES.map((stage, index) => (
+            <article
+              key={stage.number}
+              className="card-surface group relative overflow-hidden rounded-2xl p-6 transition hover:border-cyan-400/35"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-3xl font-black text-cyan-400/25 transition group-hover:text-cyan-400/45">
+                  {stage.number}
                 </span>
-              ) : null}
-            </div>
+                {index < STAGES.length - 1 ? (
+                  <span className="text-lg text-slate-600" aria-hidden="true">
+                    →
+                  </span>
+                ) : null}
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-white">{stage.title}</h3>
+              <p className="mt-2 text-[14px] leading-7 text-slate-400">
+                {stage.detail}
+              </p>
+            </article>
           ))}
         </div>
-        <p className="mt-8 text-center text-xs text-slate-500">
-          处理流程：原始信号 → 数据检查 → 信号预处理 → 时间窗切分 → 特征提取 →
-          模型推理 → 左转 / 右转 / 直行 / 停止（当前为冷启动科研模型）
-        </p>
+        <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-5 text-center text-[14px] leading-7 text-slate-400">
+          欧氏对齐使用同一请求中的完整批次计算参考，因此单个试次的结果会受到批次组成影响；
+          在线实验平台会明确展示这一算法边界。
+        </div>
       </div>
     </section>
   );

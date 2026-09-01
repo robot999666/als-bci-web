@@ -1,13 +1,12 @@
 "use client";
 
 const STEPS = [
-  "原始信号",
-  "数据检查",
-  "信号预处理",
-  "时间窗切分",
-  "特征提取",
-  "模型推理",
-  "意图输出",
+  "脑电输入",
+  "安全校验",
+  "欧氏对齐",
+  "空间特征",
+  "线性判别",
+  "四类输出",
 ];
 
 type StepState = "done" | "active" | "pending";
@@ -39,11 +38,11 @@ export default function PipelineView({
   const states = stepStates(hasData, streaming);
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
+    <section className="card-surface rounded-2xl p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-white">信号处理流程</h2>
-        <span className="text-[11px] text-slate-500">
-          EA+FBCSP 冷启动
+        <h2 className="text-base font-semibold text-white">信号处理流程</h2>
+        <span className="text-[12px] text-slate-500">
+          冷启动批量推理
         </span>
       </div>
       <ol className="thin-scrollbar flex items-center gap-1 overflow-x-auto pb-2">
@@ -81,9 +80,8 @@ export default function PipelineView({
           );
         })}
       </ol>
-      <p className="mt-3 text-[11px] leading-relaxed text-slate-500">
-        输入经格式校验后，以整批 trial 计算 EA 对齐参考，再由多频带 CSP 与 LDA
-        输出四分类概率。批内样本共同影响 EA 参考，因此结果具有批次耦合性。
+      <p className="mt-3 text-[12px] leading-6 text-slate-500">
+        输入通过格式校验后，以整批试次计算欧氏对齐（EA）参考，再由滤波器组共空间模式（FBCSP）和线性判别分析（LDA）输出四分类概率。批内样本共同影响对齐参考，因此结果具有批次耦合性。
       </p>
     </section>
   );

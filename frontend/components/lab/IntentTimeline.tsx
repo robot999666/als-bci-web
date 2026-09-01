@@ -9,11 +9,11 @@ interface IntentTimelineProps {
 
 export default function IntentTimeline({ predictions }: IntentTimelineProps) {
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
+    <section className="card-surface rounded-2xl p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-white">意图识别 Timeline</h2>
-        <span className="text-[11px] text-slate-500">
-          {predictions.length} 个 trial
+        <h2 className="text-base font-semibold text-white">试次预测序列</h2>
+        <span className="text-[12px] text-slate-500">
+          {predictions.length} 个试次
         </span>
       </div>
       {predictions.length > 0 ? (
@@ -25,11 +25,11 @@ export default function IntentTimeline({ predictions }: IntentTimelineProps) {
                 key={prediction.trial_index}
                 className={`shrink-0 rounded-lg border px-3 py-2 ${meta.chipClass}`}
               >
-                <p className="text-[10px] text-slate-400">
-                  Trial #{prediction.trial_index + 1}
+                <p className="text-[11px] text-slate-400">
+                  试次 #{prediction.trial_index + 1}
                 </p>
                 <p className="mt-0.5 text-xs font-semibold">{meta.zh}</p>
-                <p className="mt-0.5 text-[10px] opacity-80">
+                <p className="mt-0.5 text-[11px] opacity-80">
                   {Math.round(prediction.confidence * 100)}%
                 </p>
               </li>

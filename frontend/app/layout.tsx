@@ -4,9 +4,9 @@ import Footer from "@/components/site/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ALS-BCI · 模块化便携辅助终端 | 科研原型",
+  title: "ALS-BCI · 脑机接口意图识别平台",
   description:
-    "面向 ALS 重度运动障碍人群的脑电-眼电多模态意图识别系统：V0 科研原型与在线实验平台。",
+    "面向渐冻症患者的运动想象脑电四分类辅助交互研究与在线实验平台。",
 };
 
 export default function RootLayout({
@@ -22,4 +22,3 @@ export default function RootLayout({
     </html>
   );
 }
-

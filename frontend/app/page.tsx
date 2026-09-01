@@ -1,9 +1,9 @@
 import Hero from "@/components/site/home/Hero";
-import Background from "@/components/site/home/Background";
-import PainPoints from "@/components/site/home/PainPoints";
+import AlsOverview from "@/components/site/home/AlsOverview";
+import ProjectSolution from "@/components/site/home/ProjectSolution";
 import Architecture from "@/components/site/home/Architecture";
-import Technologies from "@/components/site/home/Technologies";
-import Scenarios from "@/components/site/home/Scenarios";
+import Capabilities from "@/components/site/home/Capabilities";
+import Outlook from "@/components/site/home/Outlook";
 import Team from "@/components/site/home/Team";
 import PlatformCta from "@/components/site/home/PlatformCta";
 
@@ -11,14 +11,13 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Background />
-      <PainPoints />
+      <AlsOverview />
+      <ProjectSolution />
       <Architecture />
-      <Technologies />
-      <Scenarios />
+      <Capabilities />
+      <Outlook />
       <Team />
       <PlatformCta />
     </>
   );
 }
-

@@ -1,60 +1,131 @@
 import Link from "next/link";
 
-const HERO_POINTS = [
-  "多模态 EEG + EOG",
-  "时间窗意图识别",
-  "EA+FBCSP 冷启动",
-  "科研原型 · 待验证",
+const EVIDENCE_POINTS = [
+  "3 / 22 通道模型",
+  "250 Hz 采样率",
+  "四类运动想象指令",
+  "CPU 容器化部署",
 ];
+
+const INTENTS = ["左转", "右转", "直行", "停止"];
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(8,145,178,0.22),transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(rgba(51,65,85,0.35)_1px,transparent_1px),linear-gradient(90deg,rgba(51,65,85,0.35)_1px,transparent_1px)] [background-size:44px_44px]" />
-
-      <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 sm:pt-32">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-medium text-cyan-300">
-            科研原型 · V0 Demo · 待真实数据验证
+    <section className="academic-grid relative overflow-hidden border-b border-slate-800/70">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_68%_20%,rgba(14,116,144,0.2),transparent_35%),linear-gradient(180deg,rgba(2,6,23,0.05),#020617_92%)]" />
+      <div className="relative mx-auto grid min-h-[680px] max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
+        <div>
+          <p className="inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-400/8 px-4 py-2 text-[13px] font-medium text-cyan-200">
+            首都师范大学跨学科科研项目
           </p>
-          <h1 className="text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
-            模块化便携辅助终端
+          <h1 className="mt-7 text-[38px] font-black leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[62px]">
+            <span className="block text-cyan-300">ALS-BCI</span>
+            <span className="block sm:inline">脑机接口</span>
+            <span className="block sm:inline">意图识别平台</span>
           </h1>
-          <p className="mt-6 text-lg font-medium text-cyan-200 sm:text-xl">
-            面向 ALS 重度运动障碍人群，通过脑电运动想象识别四类导航指令
+          <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-cyan-100 sm:text-xl">
+            面向渐冻症患者的运动想象脑电四分类辅助交互研究
           </p>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
-            以 2 秒 trial 为单位识别「左转 / 右转 / 直行 / 停止」，
-            为无法进行言语与肢体沟通的患者提供辅助控制通道。
-            本平台当前使用 S3 科研样例与冷启动模型演示完整流程。
+          <p className="mt-5 max-w-2xl text-[15px] leading-8 text-slate-400 sm:text-base">
+            平台将脑电信号（EEG）转换为左转、右转、直行和停止四类离散指令，
+            已完成 3 通道与 22 通道模型接入、科研数据回放、批量预测和网页可视化。
           </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link
               href="/lab"
-              className="w-full rounded-xl bg-cyan-500 px-8 py-3.5 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/25 transition hover:bg-cyan-400 sm:w-auto"
+              className="rounded-xl bg-cyan-400 px-6 py-3.5 text-center text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/15 transition hover:-translate-y-0.5 hover:bg-cyan-300"
             >
               进入在线实验平台
             </Link>
             <Link
               href="/#architecture"
-              className="w-full rounded-xl border border-slate-700 px-8 py-3.5 text-sm font-medium text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300 sm:w-auto"
+              className="rounded-xl border border-slate-600 bg-slate-950/40 px-6 py-3.5 text-center text-sm font-semibold text-slate-100 transition hover:border-cyan-400/60 hover:text-cyan-200"
             >
               了解系统架构
             </Link>
+            <Link
+              href="/#als"
+              className="rounded-xl border border-slate-700 px-6 py-3.5 text-center text-sm font-semibold text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
+            >
+              了解渐冻症
+            </Link>
           </div>
 
-          <ul className="mt-12 flex flex-wrap items-center justify-center gap-2.5">
-            {HERO_POINTS.map((point) => (
+          <ul className="mt-9 grid max-w-2xl grid-cols-2 gap-2.5 sm:flex sm:flex-wrap">
+            {EVIDENCE_POINTS.map((point) => (
               <li
                 key={point}
-                className="rounded-full border border-slate-800 bg-slate-900/60 px-4 py-1.5 text-xs text-slate-400"
+                className="rounded-lg border border-slate-800 bg-slate-900/65 px-3 py-2 text-center text-[12px] text-slate-300 sm:text-left"
               >
+                <span className="mr-1.5 text-cyan-400">●</span>
                 {point}
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+          <div className="absolute -inset-8 rounded-full bg-cyan-500/8 blur-3xl" />
+          <div className="card-surface relative overflow-hidden rounded-3xl p-6 sm:p-7">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <p className="text-[13px] font-semibold text-white">脑电到指令</p>
+                <p className="mt-1 text-[12px] text-slate-500">完整推理链路已接入</p>
+              </div>
+              <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1 text-[12px] text-emerald-300">
+                模型就绪
+              </span>
+            </div>
+
+            <div className="mt-7 rounded-2xl border border-slate-800 bg-slate-950/65 p-4">
+              <div className="flex items-center justify-between text-[12px] text-slate-400">
+                <span>脑电信号（EEG）</span>
+                <span>2.0 秒</span>
+              </div>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 460 100"
+                className="mt-3 h-24 w-full"
+                preserveAspectRatio="none"
+              >
+                <path d="M0 50H460" stroke="#1E293B" strokeWidth="1" />
+                <path
+                  d="M0 54 18 48 34 52 48 45 62 56 75 47 88 51 101 39 114 63 126 44 138 52 150 49 164 55 178 45 193 51 208 42 222 58 238 47 252 51 267 31 281 68 295 46 310 54 326 43 341 55 356 48 372 52 388 40 405 61 421 45 440 51 460 47"
+                  fill="none"
+                  stroke="#22D3EE"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
+            <div className="my-5 flex items-center justify-center gap-2 text-[12px] text-slate-400">
+              <span className="rounded-lg border border-slate-700 px-3 py-2">欧氏对齐</span>
+              <span aria-hidden="true">→</span>
+              <span className="rounded-lg border border-slate-700 px-3 py-2">特征提取</span>
+              <span aria-hidden="true">→</span>
+              <span className="rounded-lg border border-cyan-400/30 bg-cyan-500/8 px-3 py-2 text-cyan-200">
+                四分类
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {INTENTS.map((intent, index) => (
+                <div
+                  key={intent}
+                  className={`rounded-xl border px-4 py-3 text-center text-sm font-semibold ${
+                    index === 2
+                      ? "border-cyan-400/45 bg-cyan-500/12 text-cyan-200"
+                      : "border-slate-800 bg-slate-950/45 text-slate-400"
+                  }`}
+                >
+                  {intent}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
