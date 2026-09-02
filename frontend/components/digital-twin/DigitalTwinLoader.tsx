@@ -46,5 +46,9 @@ export default function DigitalTwinLoader() {
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={anchorRef}>{shouldLoad ? <DigitalTwinDemo /> : <LoadingCard />}</div>;
+  return (
+    <div id="digital-twin" ref={anchorRef} className="scroll-mt-24">
+      {shouldLoad ? <DigitalTwinDemo /> : <LoadingCard />}
+    </div>
+  );
 }

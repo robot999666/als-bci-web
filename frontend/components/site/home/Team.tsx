@@ -14,7 +14,7 @@ const CORE_MEMBERS = [
     grade: "2026级本科生",
   },
   {
-    role: "Web 平台搭建（网页系统开发）",
+    role: "web搭建",
     name: "李鸿鑫",
     school: "首都师范大学 信息工程学院",
     grade: "2024级本科生",
@@ -44,16 +44,14 @@ export default function Team() {
         />
 
         <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50">
-          <div className="grid gap-3 border-b border-slate-800 px-6 py-6 sm:grid-cols-[180px_1fr] sm:items-center sm:px-8">
+          <div className="grid gap-2 border-b border-slate-800 px-6 py-6 sm:grid-cols-[180px_120px_1fr] sm:items-center sm:px-8">
             <p className="text-[13px] font-semibold tracking-[0.12em] text-cyan-300">
               指导老师
             </p>
-            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <p className="text-xl font-semibold text-white">丁辉</p>
-              <p className="text-[15px] text-slate-400">
-                首都师范大学 信息工程学院 · 副教授
-              </p>
-            </div>
+            <p className="text-xl font-semibold text-white">丁辉</p>
+            <p className="text-[15px] text-slate-400">
+              首都师范大学 信息工程学院 · 副教授
+            </p>
           </div>
 
           <div className="divide-y divide-slate-800/80">

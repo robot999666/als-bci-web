@@ -45,7 +45,7 @@ export default function ResearchEvidence() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeading
-          eyebrow="数据、算法与实验依据"
+          eyebrow="实验成果"
           title="用明确参数和离线实验支撑技术选择"
           description="模型围绕运动想象脑电的小样本特征设计，采用可解释、计算量低的滤波器组共空间模式（FBCSP）与正则化线性判别分析（LDA）。"
         />
@@ -112,9 +112,6 @@ export default function ResearchEvidence() {
           </div>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-500/5 px-5 py-4 text-[13px] leading-6 text-amber-100/75">
-          以上数据来自项目书中的 BCI Competition IV 2a 离线实验。当前在线平台只接入冷启动批量模型，不提供在线个体化训练；实验页中的 S3 回归结果仅用于软件复现，不能与跨受试者泛化准确率混用。
-        </div>
         <p className="mt-4 text-[12px] leading-6 text-slate-500">
           方法依据：Ang 等提出的滤波器组共空间模式（FBCSP，2008）；He 与 Wu 提出的脑机接口欧氏空间数据对齐方法（EA，2020）。
         </p>

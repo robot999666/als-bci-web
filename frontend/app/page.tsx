@@ -7,6 +7,7 @@ import Capabilities from "@/components/site/home/Capabilities";
 import Outlook from "@/components/site/home/Outlook";
 import Team from "@/components/site/home/Team";
 import PlatformCta from "@/components/site/home/PlatformCta";
+import DigitalTwinCta from "@/components/site/home/DigitalTwinCta";
 
 export default function HomePage() {
   return (
@@ -20,6 +21,7 @@ export default function HomePage() {
       <Outlook />
       <Team />
       <PlatformCta />
+      <DigitalTwinCta />
     </>
   );
 }

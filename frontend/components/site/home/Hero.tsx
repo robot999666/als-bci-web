@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const EVIDENCE_POINTS = [
-  "BCI 2a 基准数据",
-  "4 个重叠频带",
-  "24 维空间特征",
-  "CPU 轻量推理",
+  "非侵入式脑电采集",
+  "四类运动意图识别",
+  "多通道信号分析",
+  "CPU 轻量化推理",
 ];
 
 const INTENTS = ["左转", "右转", "直行", "停止"];
@@ -16,7 +16,7 @@ export default function Hero() {
       <div className="relative mx-auto grid min-h-[680px] max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-400/8 px-4 py-2 text-[13px] font-medium text-cyan-200">
-            首都师范大学跨学科科研项目
+            中国国际大学生创新大赛项目
           </p>
           <h1 className="mt-7 text-[38px] font-black leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[62px]">
             <span className="block text-cyan-300">ALS-BCI</span>
@@ -24,11 +24,12 @@ export default function Hero() {
             <span className="block sm:inline">意图识别平台</span>
           </h1>
           <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-cyan-100 sm:text-xl">
-            面向渐冻症患者的运动想象脑电四分类辅助交互研究
+            面向渐冻症患者的脑电意图识别与辅助交互系统
           </p>
           <p className="mt-5 max-w-2xl text-[15px] leading-8 text-slate-400 sm:text-base">
-            平台将脑电信号（EEG）转换为左转、右转、直行和停止四类离散指令，
-            已完成示例数据动画、3/22 通道 NPZ 真实推理、批量预测和多通道波形可视化。
+            系统通过采集用户的运动想象脑电信号，识别左转、右转、直行和停止四类离散意图，
+            并将识别结果转化为辅助设备可执行的控制指令。平台支持脑电数据分析、信号可视化与
+            意图识别流程演示，用于验证从脑电采集到指令输出的完整技术链路。
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -39,10 +40,10 @@ export default function Hero() {
               进入在线实验平台
             </Link>
             <Link
-              href="/#architecture"
-              className="rounded-xl border border-slate-600 bg-slate-950/40 px-6 py-3.5 text-center text-sm font-semibold text-slate-100 transition hover:border-cyan-400/60 hover:text-cyan-200"
+              href="/lab#digital-twin"
+              className="rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3.5 text-center text-sm font-bold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 hover:from-indigo-400 hover:to-violet-400"
             >
-              了解系统架构
+              3D数字孪生演示
             </Link>
             <Link
               href="/#als"
@@ -70,8 +71,8 @@ export default function Hero() {
           <div className="card-surface relative overflow-hidden rounded-3xl p-6 sm:p-7">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <p className="text-[13px] font-semibold text-white">脑电到指令</p>
-                <p className="mt-1 text-[12px] text-slate-500">核心算法结构可视化</p>
+                <p className="text-[13px] font-semibold text-white">从脑电到控制指令</p>
+                <p className="mt-1 text-[12px] text-slate-500">运动想象脑电的识别流程</p>
               </div>
               <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1 text-[12px] text-emerald-300">
                 技术链路概览
@@ -102,12 +103,19 @@ export default function Hero() {
             </div>
 
             <div className="my-5 flex items-center justify-center gap-2 text-[12px] text-slate-400">
-              <span className="rounded-lg border border-slate-700 px-3 py-2">欧氏对齐</span>
+              <span className="flex flex-col items-center gap-1 rounded-lg border border-slate-700 px-3 py-2">
+                欧氏对齐
+                <span className="text-[10px] leading-none text-slate-500">EA</span>
+              </span>
               <span aria-hidden="true">→</span>
-              <span className="rounded-lg border border-slate-700 px-3 py-2">特征提取</span>
+              <span className="flex flex-col items-center gap-1 rounded-lg border border-slate-700 px-3 py-2">
+                特征提取
+                <span className="text-[10px] leading-none text-slate-500">FBCSP</span>
+              </span>
               <span aria-hidden="true">→</span>
-              <span className="rounded-lg border border-cyan-400/30 bg-cyan-500/8 px-3 py-2 text-cyan-200">
-                四分类
+              <span className="flex flex-col items-center gap-1 rounded-lg border border-cyan-400/30 bg-cyan-500/8 px-3 py-2 text-cyan-200">
+                <span>四分类</span>
+                <span className="text-[10px] leading-none text-cyan-300/60">LDA</span>
               </span>
             </div>
 

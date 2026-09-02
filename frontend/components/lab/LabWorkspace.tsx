@@ -67,7 +67,7 @@ export default function LabWorkspace() {
 
   const sourceLabel = useMemo(() => {
     if (source === "example") {
-      return animation.isReady ? "示例数据动画 · 前端播放" : "示例动画载入中";
+      return animation.isReady ? "示例数据动画" : "示例动画载入中";
     }
     if (source === "upload" && uploaded) {
       return `上传文件：${uploaded.filename}`;
@@ -91,10 +91,6 @@ export default function LabWorkspace() {
         <p className="mt-3 text-[15px] text-slate-400">
           数据输入 → 欧氏对齐（EA）→ 滤波器组共空间模式（FBCSP）→ 线性判别分析（LDA）→ 四分类指令
         </p>
-        <div className="mt-5 rounded-xl border border-amber-400/20 bg-amber-500/5 px-4 py-3 text-[13px] leading-6 text-amber-100/75">
-          默认示例动画在浏览器本地运行，不连接后端，也不代表模型结果；上传符合规范的 NPZ 文件后，
-          系统才会调用真实冷启动模型。所有内容仅用于科研与软件实验，不构成医疗判断。
-        </div>
       </header>
 
       {displayError ? (

@@ -16,12 +16,11 @@ export default function Footer() {
               <BrandMark className="h-10 w-10" />
               <div>
                 <p className="font-bold text-white">ALS-BCI 脑机接口意图识别平台</p>
-                <p className="mt-0.5 text-[12px] text-slate-500">首都师范大学跨学科科研项目</p>
+                <p className="mt-0.5 text-[12px] text-slate-500">中国国际大学生创新大赛项目</p>
               </div>
             </div>
             <p className="mt-5 text-[13px] leading-7 text-slate-500">
-              面向渐冻症患者的运动想象脑电四分类辅助交互研究。
-              本项目用于科研与教学验证，不构成医疗器械、诊断工具或治疗建议。
+              本项目为面向渐冻症患者的脑电意图识别与辅助交互系统，不构成医疗器械、诊断工具或治疗建议。
             </p>
           </div>
           <div className="grid grid-cols-2 gap-10 text-[13px]">

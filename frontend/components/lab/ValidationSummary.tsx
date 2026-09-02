@@ -30,7 +30,7 @@ export default function ValidationSummary({
           </h2>
           <p className="mt-1 text-[12px] text-slate-400">
             {mode === "example"
-              ? "当前内容由浏览器本地播放，不连接后端，也不执行模型计算。"
+              ? "当前内容由浏览器本地播放，不执行模型计算。"
               : "动态结果来自当前批次，离线基线来自完整 S3 样例。"}
           </p>
         </div>

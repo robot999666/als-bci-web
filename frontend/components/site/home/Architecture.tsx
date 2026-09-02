@@ -70,10 +70,6 @@ export default function Architecture() {
             </article>
           ))}
         </div>
-        <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-5 text-center text-[15px] leading-7 text-slate-400">
-          欧氏对齐使用同一请求中的完整批次计算参考，因此单个试次的结果会受到批次组成影响；
-          在线实验平台会明确展示这一算法边界。
-        </div>
       </div>
     </section>
   );

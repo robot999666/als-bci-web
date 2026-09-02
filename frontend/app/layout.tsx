@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ALS-BCI · 脑机接口意图识别平台",
   description:
-    "面向渐冻症患者的运动想象脑电四分类辅助交互研究与在线实验平台。",
+    "面向渐冻症患者的脑电意图识别与辅助交互系统及其在线实验平台。",
 };
 
 export default function RootLayout({

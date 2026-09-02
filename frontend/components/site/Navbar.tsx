@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: "/#architecture", label: "技术架构" },
   { href: "/#evidence", label: "实验成果" },
   { href: "/#capabilities", label: "系统能力" },
-  { href: "/#team", label: "团队" },
+  { href: "/#team", label: "团队成员" },
 ];
 
 export default function Navbar() {
@@ -48,6 +48,12 @@ export default function Navbar() {
           >
             在线实验平台
           </Link>
+          <Link
+            href="/lab#digital-twin"
+            className="hidden shrink-0 whitespace-nowrap rounded-lg bg-gradient-to-r from-indigo-500 to-violet-500 px-3.5 py-2.5 text-[13px] font-semibold text-white transition hover:from-indigo-400 hover:to-violet-400 sm:inline-flex sm:px-4 sm:text-sm"
+          >
+            3D数字孪生演示
+          </Link>
           <button
             type="button"
             aria-expanded={menuOpen}
@@ -81,6 +87,15 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <div className="mt-2 border-t border-slate-800 pt-2">
+              <Link
+                href="/lab#digital-twin"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-lg px-3 py-2.5 text-[15px] text-slate-300 hover:bg-slate-900 hover:text-cyan-300"
+              >
+                3D数字孪生演示
+              </Link>
+            </div>
           </div>
         </div>
       ) : null}

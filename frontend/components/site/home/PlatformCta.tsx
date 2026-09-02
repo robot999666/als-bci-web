@@ -11,7 +11,7 @@ export default function PlatformCta() {
             在线实验平台
           </p>
           <h2 className="mt-4 text-[28px] font-bold text-white sm:text-4xl">
-            亲自查看脑电四分类的完整过程
+            亲自体验脑电数据的在线意图识别流程
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-8 text-slate-400">
             先通过浏览器本地动画理解波形与指令交互，再上传 NumPy 压缩数组文件（NPZ），

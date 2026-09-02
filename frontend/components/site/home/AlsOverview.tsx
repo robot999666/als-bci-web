@@ -59,8 +59,7 @@ export default function AlsOverview() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-amber-400/18 bg-amber-500/5 px-5 py-4 text-[13px] leading-6 text-amber-100/75">
-          本项目是脑机接口科研与教学平台，不构成医疗器械、诊断工具或治疗建议。
-          医学资料参考：
+          本项目不构成医疗器械、诊断工具或治疗建议。医学资料参考：
           <a
             href="https://www.ninds.nih.gov/health-information/disorders/amyotrophic-lateral-sclerosis-als"
             target="_blank"

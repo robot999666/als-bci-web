@@ -19,8 +19,7 @@ export default function DigitalTwinDemo() {
 
   return (
     <section
-      id="digital-twin"
-      className="mt-12 scroll-mt-24 border-t border-slate-800/80 pt-12"
+      className="mt-12 border-t border-slate-800/80 pt-12"
       aria-labelledby="digital-twin-title"
     >
       <div className="mb-7 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
@@ -40,9 +39,6 @@ export default function DigitalTwinDemo() {
             通过交互动画展示从运动想象、脑电采集、意图识别到辅助终端执行的完整工作流程。
           </p>
         </div>
-        <p className="max-w-lg rounded-xl border border-amber-400/18 bg-amber-500/5 px-4 py-3 text-[12px] leading-6 text-amber-100/65">
-          动画用于展示系统工作流程，不代表实时脑电推理结果；场景中的 EEG 波形和数据粒子均为流程示意。
-        </p>
       </div>
 
       <div className="rounded-[24px] border border-cyan-400/15 bg-[radial-gradient(circle_at_30%_0%,rgba(8,145,178,0.12),transparent_38%),rgba(8,15,31,0.82)] p-3 shadow-[0_30px_90px_rgba(2,6,23,0.42)] sm:p-5">
