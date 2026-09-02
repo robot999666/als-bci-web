@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const EVIDENCE_POINTS = [
-  "3 / 22 通道模型",
-  "250 Hz 采样率",
-  "四类运动想象指令",
-  "CPU 容器化部署",
+  "BCI 2a 基准数据",
+  "4 个重叠频带",
+  "24 维空间特征",
+  "CPU 轻量推理",
 ];
 
 const INTENTS = ["左转", "右转", "直行", "停止"];
@@ -28,7 +28,7 @@ export default function Hero() {
           </p>
           <p className="mt-5 max-w-2xl text-[15px] leading-8 text-slate-400 sm:text-base">
             平台将脑电信号（EEG）转换为左转、右转、直行和停止四类离散指令，
-            已完成 3 通道与 22 通道模型接入、科研数据回放、批量预测和网页可视化。
+            已完成示例数据动画、3/22 通道 NPZ 真实推理、批量预测和多通道波形可视化。
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -71,10 +71,10 @@ export default function Hero() {
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
                 <p className="text-[13px] font-semibold text-white">脑电到指令</p>
-                <p className="mt-1 text-[12px] text-slate-500">完整推理链路已接入</p>
+                <p className="mt-1 text-[12px] text-slate-500">核心算法结构可视化</p>
               </div>
               <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1 text-[12px] text-emerald-300">
-                模型就绪
+                技术链路概览
               </span>
             </div>
 

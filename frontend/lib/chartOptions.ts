@@ -144,7 +144,7 @@ export function buildEmptyOption(message = "等待脑电数据…"): echarts.ECh
     backgroundColor: "transparent",
     title: {
       text: message,
-      subtext: "可使用科研数据回放或上传数据文件",
+      subtext: "正在载入示例动画，也可上传数据文件",
       left: "center",
       top: "middle",
       textStyle: { color: "#64748b", fontSize: 15, fontWeight: 500 },

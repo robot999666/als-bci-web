@@ -14,6 +14,7 @@ type StepState = "done" | "active" | "pending";
 interface PipelineViewProps {
   hasData: boolean;
   streaming: boolean;
+  mode: "example" | "model";
 }
 
 function stepStates(hasData: boolean, streaming: boolean): StepState[] {
@@ -34,6 +35,7 @@ function stepStates(hasData: boolean, streaming: boolean): StepState[] {
 export default function PipelineView({
   hasData,
   streaming,
+  mode,
 }: PipelineViewProps) {
   const states = stepStates(hasData, streaming);
 
@@ -42,7 +44,7 @@ export default function PipelineView({
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-base font-semibold text-white">信号处理流程</h2>
         <span className="text-[12px] text-slate-500">
-          冷启动批量推理
+          {mode === "example" ? "算法流程示意" : "冷启动批量推理"}
         </span>
       </div>
       <ol className="thin-scrollbar flex items-center gap-1 overflow-x-auto pb-2">
@@ -53,7 +55,9 @@ export default function PipelineView({
             <li key={step} className="flex shrink-0 items-center gap-1">
               <span
                 className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs ${
-                  state === "done"
+                  mode === "example"
+                    ? "border-cyan-400/25 bg-cyan-500/6 text-cyan-200"
+                    : state === "done"
                     ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300"
                     : state === "active"
                       ? "border-cyan-400/60 bg-cyan-500/10 text-cyan-300"
@@ -62,14 +66,22 @@ export default function PipelineView({
               >
                 <span
                   className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${
-                    state === "done"
+                    mode === "example"
+                      ? "bg-cyan-500/20"
+                      : state === "done"
                       ? "bg-emerald-500/30"
                       : state === "active"
                         ? "bg-cyan-500/30"
                         : "bg-slate-800"
                   }`}
                 >
-                  {state === "done" ? "✓" : state === "active" ? "•" : index + 1}
+                  {mode === "example"
+                    ? index + 1
+                    : state === "done"
+                      ? "✓"
+                      : state === "active"
+                        ? "•"
+                        : index + 1}
                 </span>
                 {step}
               </span>
@@ -81,7 +93,9 @@ export default function PipelineView({
         })}
       </ol>
       <p className="mt-3 text-[12px] leading-6 text-slate-500">
-        输入通过格式校验后，以整批试次计算欧氏对齐（EA）参考，再由滤波器组共空间模式（FBCSP）和线性判别分析（LDA）输出四分类概率。批内样本共同影响对齐参考，因此结果具有批次耦合性。
+        {mode === "example"
+          ? "示例动画只演示从脑电波形到四类指令的界面流程，不执行算法计算；上传 NPZ 后，系统才会按此链路完成真实批量推理。"
+          : "输入通过格式校验后，以整批试次计算欧氏对齐（EA）参考，再由滤波器组共空间模式（FBCSP）和线性判别分析（LDA）输出四分类概率。批内样本共同影响对齐参考，因此结果具有批次耦合性。"}
       </p>
     </section>
   );

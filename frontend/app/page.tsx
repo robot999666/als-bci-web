@@ -2,6 +2,7 @@ import Hero from "@/components/site/home/Hero";
 import AlsOverview from "@/components/site/home/AlsOverview";
 import ProjectSolution from "@/components/site/home/ProjectSolution";
 import Architecture from "@/components/site/home/Architecture";
+import ResearchEvidence from "@/components/site/home/ResearchEvidence";
 import Capabilities from "@/components/site/home/Capabilities";
 import Outlook from "@/components/site/home/Outlook";
 import Team from "@/components/site/home/Team";
@@ -14,6 +15,7 @@ export default function HomePage() {
       <AlsOverview />
       <ProjectSolution />
       <Architecture />
+      <ResearchEvidence />
       <Capabilities />
       <Outlook />
       <Team />

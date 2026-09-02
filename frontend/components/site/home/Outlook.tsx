@@ -7,7 +7,7 @@ export default function Outlook() {
         <SectionHeading
           eyebrow="应用价值与研究展望"
           title="以可验证平台支撑后续辅助交互研究"
-          description="当前系统聚焦运动想象脑电四分类，为算法比较、数据回放和交互验证提供统一实验环境。"
+          description="当前系统聚焦运动想象脑电四分类，为算法说明、示例动画、真实批量推理和交互验证提供统一实验环境。"
         />
         <div className="grid gap-6 lg:grid-cols-2">
           <article className="card-surface rounded-3xl p-7 sm:p-8">

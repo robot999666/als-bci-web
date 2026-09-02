@@ -31,10 +31,16 @@ async function request<T>(
       ...init,
       signal: controller.signal,
     });
-  } catch {
+  } catch (error) {
+    const errorName =
+      typeof error === "object" && error !== null && "name" in error
+        ? String(error.name)
+        : "";
     throw new ApiError(
       0,
-      "无法连接后端服务，请确认后端已启动（默认 http://localhost:8000）",
+      errorName === "AbortError"
+        ? "后端响应超时，请稍后重试。"
+        : "无法连接后端服务，请检查服务状态或网络配置后重试。",
     );
   } finally {
     clearTimeout(timer);

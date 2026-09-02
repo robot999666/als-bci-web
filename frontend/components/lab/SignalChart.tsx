@@ -11,6 +11,7 @@ import type { SignalData } from "@/lib/types";
 
 interface SignalChartProps {
   signal: SignalData | null;
+  mode: "example" | "model";
 }
 
 type ViewMode = "focus" | "all";
@@ -27,7 +28,7 @@ function chooseFocusChannels(channels: string[]): string[] {
   return preferred.length === 3 ? preferred : channels.slice(0, 3);
 }
 
-export default function SignalChart({ signal }: SignalChartProps) {
+export default function SignalChart({ signal, mode }: SignalChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<echarts.ECharts | null>(null);
   const [viewState, setViewState] = useState<ViewState>({
@@ -101,7 +102,7 @@ export default function SignalChart({ signal }: SignalChartProps) {
                 {signal.timestamps.length} 采样点
               </span>
               <span className="rounded-lg border border-slate-700 bg-slate-950/45 px-3 py-1.5">
-                首个试次
+                {mode === "example" ? "2 秒播放窗口" : "首个试次"}
               </span>
             </div>
             {supportsFocusView ? (
@@ -171,7 +172,9 @@ export default function SignalChart({ signal }: SignalChartProps) {
       </div>
       {signal ? (
         <p className="mt-3 text-[12px] leading-6 text-slate-500">
-          每个通道使用独立纵轴范围，纵轴单位为微伏（μV）；移动指针可查看具体时间与幅值。
+          {mode === "example"
+            ? "示例动画循环展示 C3、Cz、C4 三路波形；纵轴单位为微伏（μV），不代表实时采集或模型推理。"
+            : "每个通道使用独立纵轴范围，纵轴单位为微伏（μV）；移动指针可查看具体时间与幅值。"}
         </p>
       ) : null}
     </div>

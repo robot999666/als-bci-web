@@ -18,8 +18,8 @@ const CAPABILITIES = [
     text: "逐试次提供分类编号、中文指令、置信度与四类概率。",
   },
   {
-    title: "交互式科研回放",
-    text: "支持内置科研样例回放与自定义数据上传，直观查看脑电波形和识别结果。",
+    title: "无后端示例动画",
+    text: "浏览器本地循环展示三通道波形与四类结果；上传 NPZ 后再切换到真实模型输出。",
   },
   {
     title: "容器化运行",
@@ -37,7 +37,7 @@ export default function Capabilities() {
         <SectionHeading
           eyebrow="已完成系统能力"
           title="从模型推理到网页交互均已贯通"
-          description="评委可以通过在线实验平台直接回放科研数据或上传符合规范的数据文件，观察真实模型输出。"
+          description="评委可以先通过不依赖后端的动画理解交互流程，再上传符合规范的数据文件观察真实模型输出。"
         />
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {CAPABILITIES.map((capability) => (
@@ -48,7 +48,7 @@ export default function Capabilities() {
               <h3 className="mt-5 text-lg font-semibold text-white">
                 {capability.title}
               </h3>
-              <p className="mt-3 text-[14px] leading-7 text-slate-400">
+              <p className="mt-3 text-[15px] leading-7 text-slate-400">
                 {capability.text}
               </p>
             </article>

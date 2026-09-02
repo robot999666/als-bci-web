@@ -3,8 +3,8 @@ import SectionHeading from "@/components/site/SectionHeading";
 const STAGES = [
   {
     number: "01",
-    title: "脑电数据输入",
-    detail: "3 / 22 通道 · 250 Hz · 501 点",
+    title: "标准窗口输入",
+    detail: "3 / 22 通道 · 250 Hz · 2 秒 501 点",
   },
   {
     number: "02",
@@ -13,21 +13,26 @@ const STAGES = [
   },
   {
     number: "03",
-    title: "欧氏对齐（EA）",
-    detail: "整批试次估计参考协方差",
+    title: "多频带分解",
+    detail: "4–12、8–16、12–24、20–36 Hz",
   },
   {
     number: "04",
-    title: "滤波器组共空间模式",
-    detail: "FBCSP 提取多频带空间特征",
+    title: "欧氏对齐（EA）",
+    detail: "冷启动批次估计参考协方差",
   },
   {
     number: "05",
-    title: "线性判别分析（LDA）",
-    detail: "输出四分类概率与置信度",
+    title: "CSP 空间特征",
+    detail: "22 通道每频带提取 6 个判别特征",
   },
   {
     number: "06",
+    title: "线性判别分析（LDA）",
+    detail: "24 维特征输出四分类概率",
+  },
+  {
+    number: "07",
     title: "网页结果展示",
     detail: "波形、意图与试次预测序列",
   },
@@ -42,7 +47,7 @@ export default function Architecture() {
           title="可追踪的端到端脑电推理流程"
           description="每个环节均对应当前系统中的实际实现，从科研数据输入到四分类结果展示形成完整闭环。"
         />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {STAGES.map((stage, index) => (
             <article
               key={stage.number}
@@ -59,13 +64,13 @@ export default function Architecture() {
                 ) : null}
               </div>
               <h3 className="mt-4 text-lg font-semibold text-white">{stage.title}</h3>
-              <p className="mt-2 text-[14px] leading-7 text-slate-400">
+              <p className="mt-2 text-[15px] leading-7 text-slate-400">
                 {stage.detail}
               </p>
             </article>
           ))}
         </div>
-        <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-5 text-center text-[14px] leading-7 text-slate-400">
+        <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-5 text-center text-[15px] leading-7 text-slate-400">
           欧氏对齐使用同一请求中的完整批次计算参考，因此单个试次的结果会受到批次组成影响；
           在线实验平台会明确展示这一算法边界。
         </div>

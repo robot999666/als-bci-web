@@ -1,4 +1,4 @@
-export type DataSourceKind = "demo" | "upload" | "device";
+export type DataSourceKind = "example" | "upload";
 
 export type IntentLabel = "left" | "right" | "forward" | "stop";
 

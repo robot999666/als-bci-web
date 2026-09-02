@@ -50,7 +50,7 @@ export default function Team() {
             </p>
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
               <p className="text-xl font-semibold text-white">丁辉</p>
-              <p className="text-[14px] text-slate-400">
+              <p className="text-[15px] text-slate-400">
                 首都师范大学 信息工程学院 · 副教授
               </p>
             </div>
@@ -64,7 +64,7 @@ export default function Team() {
               >
                 <p className="text-[13px] font-semibold text-slate-400">{member.role}</p>
                 <p className="text-base font-semibold text-white">{member.name}</p>
-                <p className="text-[14px] text-slate-400">
+                <p className="text-[15px] text-slate-400">
                   {member.school} · {member.grade}
                 </p>
               </div>

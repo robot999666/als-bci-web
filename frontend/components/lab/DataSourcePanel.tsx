@@ -1,47 +1,43 @@
 "use client";
-
-import { useRef } from "react";
 import type { DataSourceKind } from "@/lib/types";
 
 interface DataSourcePanelProps {
   activeSource: DataSourceKind;
   uploading: boolean;
-  onSelectDemo: () => void;
+  onSelectExample: () => void;
   onFile: (file: File) => void;
 }
 
 export default function DataSourcePanel({
   activeSource,
   uploading,
-  onSelectDemo,
+  onSelectExample,
   onFile,
 }: DataSourcePanelProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   return (
     <section className="card-surface rounded-2xl p-5">
       <h2 className="mb-4 text-base font-semibold text-white">数据来源</h2>
 
       <button
         type="button"
-        onClick={onSelectDemo}
-        aria-pressed={activeSource === "demo"}
+        onClick={onSelectExample}
+        aria-pressed={activeSource === "example"}
         className={`w-full rounded-xl border p-4 text-left transition ${
-          activeSource === "demo"
+          activeSource === "example"
             ? "border-cyan-400/60 bg-cyan-500/10"
             : "border-slate-800 bg-slate-900/60 hover:border-slate-600"
         }`}
       >
         <div className="flex items-center justify-between">
           <span className="text-[15px] font-medium text-white">
-            S3 科研数据回放
+            示例数据动画
           </span>
           <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
-            可用
+            前端运行
           </span>
         </div>
         <p className="mt-2 text-[13px] leading-6 text-slate-400">
-          使用内置 3 通道科研样例，通过欧氏对齐（EA）和滤波器组共空间模式（FBCSP）模型完成批量识别。
+          自动播放 3 通道脑电波形和四类结果，用于展示界面交互效果，不参与模型推理。
         </p>
       </button>
 
@@ -55,7 +51,7 @@ export default function DataSourcePanel({
         <div className="flex items-center justify-between">
           <span className="text-[15px] font-medium text-white">上传数据文件</span>
           <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
-            可用
+            真实模型
           </span>
         </div>
         <p className="mt-2 text-[13px] leading-6 text-slate-400">
@@ -77,12 +73,11 @@ export default function DataSourcePanel({
             download
             className="text-[12px] text-cyan-400 hover:text-cyan-300"
           >
-            下载 S3 示例
+            下载 NPZ 样例
           </a>
         </div>
         <input
           id="bci-npz-upload"
-          ref={fileInputRef}
           type="file"
           accept=".npz"
           className="sr-only"
@@ -98,7 +93,7 @@ export default function DataSourcePanel({
       </div>
 
       <p className="mt-4 border-t border-slate-800 pt-4 text-[12px] leading-6 text-slate-500">
-        数据会在本次请求内完成推理；服务日志不记录原始脑电内容。
+        示例动画无需后端；上传文件时，数据仅在本次请求内完成推理，服务日志不记录原始脑电内容。
       </p>
     </section>
   );

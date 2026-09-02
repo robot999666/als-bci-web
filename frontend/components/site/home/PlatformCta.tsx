@@ -14,8 +14,8 @@ export default function PlatformCta() {
             亲自查看脑电四分类的完整过程
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-8 text-slate-400">
-            回放 S3 脑电科研样例或上传 NumPy 压缩数组文件（NPZ），观察波形、
-            欧氏对齐、特征提取、四分类概率与逐试次预测结果。
+            先通过浏览器本地动画理解波形与指令交互，再上传 NumPy 压缩数组文件（NPZ），
+            观察欧氏对齐、特征提取、四分类概率与逐试次预测结果。
           </p>
           <Link
             href="/lab"

@@ -15,22 +15,22 @@ import type {
   IntentPrediction,
   SignalData,
 } from "@/lib/types";
-import { useDemoStream } from "@/hooks/useDemoStream";
+import { useExampleAnimation } from "@/hooks/useExampleAnimation";
 
 export default function LabWorkspace() {
-  const [source, setSource] = useState<DataSourceKind>("demo");
+  const [source, setSource] = useState<DataSourceKind>("example");
   const [uploaded, setUploaded] = useState<AnalyzeResponse | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const stream = useDemoStream({ enabled: source === "demo" });
+  const animation = useExampleAnimation({ enabled: source === "example" });
 
-  const handleSelectDemo = useCallback(() => {
-    setSource("demo");
+  const handleSelectExample = useCallback(() => {
+    setSource("example");
     setUploaded(null);
     setUploadError(null);
-    stream.reset();
-  }, [stream]);
+    animation.reset();
+  }, [animation]);
 
   const handleFile = useCallback(
     async (file: File) => {
@@ -56,25 +56,27 @@ export default function LabWorkspace() {
   );
 
   const signal: SignalData | null =
-    source === "demo" ? stream.signal : (uploaded?.signal ?? null);
+    source === "example" ? animation.signal : (uploaded?.signal ?? null);
 
   const predictions: IntentPrediction[] =
-    source === "demo" ? stream.predictions : (uploaded?.predictions ?? []);
+    source === "example" ? animation.predictions : (uploaded?.predictions ?? []);
 
   const currentResult: BciBatchResponse | null =
-    source === "demo" ? stream.result : uploaded;
+    source === "example" ? null : uploaded;
 
   const sourceLabel = useMemo(() => {
-    if (source === "demo") {
-      return stream.status === "loading" ? "S3 数据加载中" : "S3 科研数据回放";
+    if (source === "example") {
+      return animation.isReady ? "示例数据动画 · 前端播放" : "示例动画载入中";
     }
     if (source === "upload" && uploaded) {
       return `上传文件：${uploaded.filename}`;
     }
     return "等待数据源";
-  }, [source, stream.status, uploaded]);
+  }, [animation.isReady, source, uploaded]);
 
-  const displayError = source === "demo" ? stream.error : uploadError;
+  // 默认动画不会发起网络请求；该错误只可能来自用户主动上传。
+  const displayError = uploadError;
+  const displayMode = source === "example" ? "example" : "model";
 
   return (
     <div className="mx-auto max-w-[1480px] px-4 py-10 sm:px-6">
@@ -89,8 +91,8 @@ export default function LabWorkspace() {
           数据输入 → 欧氏对齐（EA）→ 滤波器组共空间模式（FBCSP）→ 线性判别分析（LDA）→ 四分类指令
         </p>
         <div className="mt-5 rounded-xl border border-amber-400/20 bg-amber-500/5 px-4 py-3 text-[13px] leading-6 text-amber-100/75">
-          当前使用冷启动科研模型。S3 数据为科研样例回放，并非实时设备或临床验证结果；
-          识别结果仅用于算法与软件实验，不构成医疗判断。
+          默认示例动画在浏览器本地运行，不连接后端，也不代表模型结果；上传符合规范的 NPZ 文件后，
+          系统才会调用真实冷启动模型。所有内容仅用于科研与软件实验，不构成医疗判断。
         </div>
       </header>
 
@@ -104,7 +106,7 @@ export default function LabWorkspace() {
         <DataSourcePanel
           activeSource={source}
           uploading={uploading}
-          onSelectDemo={handleSelectDemo}
+          onSelectExample={handleSelectExample}
           onFile={handleFile}
         />
 
@@ -116,32 +118,50 @@ export default function LabWorkspace() {
                 {sourceLabel}
               </span>
             </div>
-            {source === "demo" ? (
-              <button
-                type="button"
-                onClick={stream.reset}
-                disabled={stream.status === "loading"}
-                className="rounded-lg border border-slate-700 px-4 py-2 text-[12px] font-medium text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300 disabled:opacity-50"
-              >
-                重新推理
-              </button>
+            {source === "example" ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={animation.togglePlayback}
+                  disabled={!animation.isReady}
+                  className="rounded-lg border border-cyan-400/35 bg-cyan-500/8 px-4 py-2 text-[12px] font-medium text-cyan-200 transition hover:border-cyan-300 hover:text-white disabled:opacity-50"
+                >
+                  {animation.isPlaying ? "暂停动画" : "继续动画"}
+                </button>
+                <button
+                  type="button"
+                  onClick={animation.reset}
+                  disabled={!animation.isReady}
+                  className="rounded-lg border border-slate-700 px-4 py-2 text-[12px] font-medium text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300 disabled:opacity-50"
+                >
+                  重新播放
+                </button>
+              </div>
             ) : null}
           </div>
-          <SignalChart signal={signal} />
+          <SignalChart signal={signal} mode={displayMode} />
         </section>
 
         <div className="lg:col-span-2 xl:col-span-1">
-          <IntentPanel predictions={predictions} />
+          <IntentPanel predictions={predictions} mode={displayMode} />
         </div>
       </div>
 
       <div className="mt-4">
-        <ValidationSummary result={currentResult} />
+        <ValidationSummary
+          result={currentResult}
+          mode={displayMode}
+          isPlaying={animation.isPlaying}
+        />
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <IntentTimeline predictions={predictions} />
-        <PipelineView hasData={predictions.length > 0} streaming={false} />
+        <IntentTimeline predictions={predictions} mode={displayMode} />
+        <PipelineView
+          hasData={predictions.length > 0}
+          streaming={source === "example" && animation.isPlaying}
+          mode={displayMode}
+        />
       </div>
 
       <p className="mt-6 rounded-xl border border-slate-800 bg-slate-900/35 px-5 py-4 text-[12px] leading-6 text-slate-500">

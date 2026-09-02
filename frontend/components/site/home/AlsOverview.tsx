@@ -31,7 +31,7 @@ export default function AlsOverview() {
             </p>
             <div className="mt-7 rounded-2xl border border-cyan-400/20 bg-cyan-500/6 p-5">
               <p className="font-semibold text-cyan-100">脑机接口研究为何重要</p>
-              <p className="mt-2 text-[14px] leading-7 text-slate-300">
+              <p className="mt-2 text-[15px] leading-7 text-slate-300">
                 脑机接口尝试直接解析脑活动中的意图信息，减少对肢体动作和言语输出的依赖，
                 为辅助表达与设备控制探索新的技术路径。
               </p>
@@ -49,7 +49,7 @@ export default function AlsOverview() {
                 </span>
                 <div>
                   <h3 className="text-base font-semibold text-white">{impact.label}</h3>
-                  <p className="mt-2 text-[14px] leading-7 text-slate-400">
+                  <p className="mt-2 text-[15px] leading-7 text-slate-400">
                     {impact.text}
                   </p>
                 </div>

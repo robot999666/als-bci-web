@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: "/#als", label: "了解渐冻症" },
   { href: "/#solution", label: "项目方案" },
   { href: "/#architecture", label: "技术架构" },
+  { href: "/#evidence", label: "实验成果" },
   { href: "/#capabilities", label: "系统能力" },
   { href: "/#team", label: "团队" },
 ];
@@ -18,7 +19,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl">
       <nav className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5">
           <BrandMark className="h-9 w-9 sm:h-10 sm:w-10" />
           <span className="text-[15px] font-bold tracking-wide text-white sm:text-base">
             ALS-BCI
@@ -43,7 +44,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/lab"
-            className="rounded-lg bg-cyan-400 px-3.5 py-2.5 text-[13px] font-semibold text-slate-950 transition-colors hover:bg-cyan-300 sm:px-4 sm:text-sm"
+            className="shrink-0 whitespace-nowrap rounded-lg bg-cyan-400 px-3.5 py-2.5 text-[13px] font-semibold text-slate-950 transition-colors hover:bg-cyan-300 sm:px-4 sm:text-sm"
           >
             在线实验平台
           </Link>

@@ -2,6 +2,11 @@ import Link from "next/link";
 import BrandMark from "@/components/site/BrandMark";
 
 export default function Footer() {
+  const configuredApiBase = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(
+    /\/+$/,
+    "",
+  );
+
   return (
     <footer className="border-t border-slate-800/80 bg-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -29,9 +34,16 @@ export default function Footer() {
             <div className="space-y-2.5 text-slate-500">
               <p className="font-semibold text-slate-300">实验资源</p>
               <Link href="/lab" className="block hover:text-cyan-300">在线实验平台</Link>
-              <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer" className="block hover:text-cyan-300">
-                推理接口文档
-              </a>
+              {configuredApiBase ? (
+                <a
+                  href={`${configuredApiBase}/docs`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block hover:text-cyan-300"
+                >
+                  推理接口文档
+                </a>
+              ) : null}
               <a href="/sample_data/S3_3ch.npz" download className="block hover:text-cyan-300">
                 脑电示例数据
               </a>
