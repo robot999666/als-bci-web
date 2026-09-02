@@ -7,6 +7,7 @@ import IntentPanel from "@/components/lab/IntentPanel";
 import IntentTimeline from "@/components/lab/IntentTimeline";
 import PipelineView from "@/components/lab/PipelineView";
 import ValidationSummary from "@/components/lab/ValidationSummary";
+import DigitalTwinLoader from "@/components/digital-twin/DigitalTwinLoader";
 import { api } from "@/lib/api";
 import type {
   AnalyzeResponse,
@@ -167,6 +168,8 @@ export default function LabWorkspace() {
       <p className="mt-6 rounded-xl border border-slate-800 bg-slate-900/35 px-5 py-4 text-[12px] leading-6 text-slate-500">
         研究展望：后续将围绕 ADS1299 脑电采集硬件、实时数据链路、用户级对齐参考和预测平滑开展研究；相关能力不属于当前在线实验范围。
       </p>
+
+      <DigitalTwinLoader />
     </div>
   );
 }
