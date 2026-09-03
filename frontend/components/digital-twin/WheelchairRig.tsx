@@ -163,6 +163,16 @@ function Wheelchair({ phase, commandId }: { phase: DemoPhase; commandId?: string
 
   return (
     <group>
+      <group position={[0, 0.045, -1.55]}>
+        <mesh position={[0, 0, 0.24]}>
+          <boxGeometry args={[0.07, 0.025, 0.62]} />
+          <meshBasicMaterial color="#22d3ee" transparent opacity={0.58} />
+        </mesh>
+        <mesh position={[0, 0, -0.18]} rotation={[-Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.18, 0.4, 3]} />
+          <meshBasicMaterial color="#67e8f9" transparent opacity={0.72} />
+        </mesh>
+      </group>
       <mesh position={[0, 0.52, 0.08]}>
         <boxGeometry args={[1.45, 0.34, 1.35]} />
         <meshStandardMaterial color="#0f3346" metalness={0.55} roughness={0.38} />

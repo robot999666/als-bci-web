@@ -12,8 +12,10 @@ function easeInOut(value: number) {
 }
 
 function forwardOffset(yaw: number, distance: number) {
+  // 轮椅模型的局部车头朝向为 -Z。Three.js 绕 Y 轴旋转后，
+  // 对应的世界坐标前向量是 (-sin(yaw), 0, -cos(yaw))。
   return {
-    x: Math.sin(yaw) * distance,
+    x: -Math.sin(yaw) * distance,
     z: -Math.cos(yaw) * distance,
   };
 }
@@ -61,8 +63,10 @@ export function getAnimatedPose(
     };
   }
 
-  const turnProgress = easeInOut(Math.min(1, progress / 0.58));
-  const moveProgress = easeInOut(Math.max(0, (progress - 0.32) / 0.68));
+  // 转弯动作分成两个连续阶段：先原地完成 45° 转向，再沿车头方向前进。
+  // 避免旋转和位移大幅重叠时产生视觉上的侧滑。
+  const turnProgress = easeInOut(Math.min(1, progress / 0.45));
+  const moveProgress = easeInOut(Math.max(0, (progress - 0.45) / 0.55));
   return {
     x: start.x + (target.x - start.x) * moveProgress,
     z: start.z + (target.z - start.z) * moveProgress,
