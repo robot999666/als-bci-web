@@ -1,5 +1,6 @@
 import type {
   AnalyzeResponse,
+  AssistantChatResponse,
   DemoSignalsResponse,
   HealthResponse,
 } from "./types";
@@ -81,4 +82,15 @@ export const api = {
       30000,
     );
   },
+
+  askAssistant: (question: string) =>
+    request<AssistantChatResponse>(
+      "/api/v1/assistant/chat",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      },
+      50000,
+    ),
 };

@@ -48,6 +48,16 @@ class Settings(BaseSettings):
     bci_max_concurrent_inferences: int = 1
     bci_demo_trials: int = 8
 
+    # 项目知识助手（仅后端读取；不得使用 NEXT_PUBLIC_* 暴露）
+    openai_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    openai_api_key: str | None = None
+    openai_model: str = "deepseek-v4-flash-0731"
+    assistant_top_k: int = 5
+    assistant_question_max_chars: int = 500
+    assistant_context_max_chars: int = 8_000
+    assistant_timeout_seconds: float = 45.0
+    assistant_max_output_tokens: int = 700
+
 
 @lru_cache
 def get_settings() -> Settings:

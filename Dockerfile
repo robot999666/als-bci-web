@@ -15,6 +15,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     -r /app/backend/requirements.lock
 
 COPY backend /app/backend
+COPY README.md /app/README.md
+COPY docs /app/docs
+COPY frontend/README.md /app/frontend/README.md
+COPY bci_4class/README.md /app/bci_4class/README.md
 COPY bci_4class/models /app/bci_4class/models
 COPY bci_4class/data /app/bci_4class/data
 

@@ -14,3 +14,6 @@ npm run build
 
 接口地址默认 `http://localhost:8000`，可通过 `frontend/.env.local` 中的
 `NEXT_PUBLIC_API_BASE_URL` 修改。
+
+全站右下角的“BCI 智答 · 项目助手”只调用上述 FastAPI 地址的
+`/api/v1/assistant/chat`，不会在前端读取或携带上游模型密钥。

@@ -70,3 +70,13 @@ export interface HealthResponse {
   runtime_versions: Record<string, string>;
   model_error: string | null;
 }
+
+export interface AssistantSource {
+  title: string;
+  section: string;
+}
+
+export interface AssistantChatResponse {
+  answer: string;
+  sources: AssistantSource[];
+}
